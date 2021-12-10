@@ -1,0 +1,7 @@
+Aquí podemos anotar cosas que tener en cuenta, decisiones tomadas, temas pendientes en general, etc.
+
+Carpetas:
+adm: cosas de administrador: gestionar productos, gestionar usuarios, etc.
+caj: cosas de cajero: crear y cerrar tickets, añadir productos, etc.
+log: trabajador de centro de logística, preparando paquetes
+ton: tienda online, usuarios particulares que entran a la web a comprar productos 
