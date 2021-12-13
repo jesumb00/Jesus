@@ -23,17 +23,17 @@
 
 
 
-#categoriasTabla > div {
+#productoTabla > div {
     display: table;
     width: 40%;
 }
 
-#categoriasTabla > div > div {
+#productoTabla > div > div {
     display: table-row;
     width: 100%;
 }
 
-#categoriasTabla > div > div > div {
+#productoTabla > div > div > div {
     display: table-cell;
     text-align: center;
     border: 1px solid silver;
@@ -41,7 +41,7 @@
     padding: 1px;
 }
 
-#categoriasTabla > div > div > div > input {
+#productoTabla > div > div > div > input {
     width: 100%;
     border: none;
 }

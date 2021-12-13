@@ -55,7 +55,8 @@ class Categoria extends Dato implements JsonSerializable
         //return $array;
     }
 
-    public function eliminar(): bool {
+    public function eliminar(): bool
+    {
         // Esto sería un control para NO eliminar una categoría si "contiene" personas.
         if ($this->obtenerPersonasPertenecientes()) return false;
 
@@ -169,4 +170,54 @@ class Persona extends Dato implements JsonSerializable
     {
         return ($this->categoriaId == $categoria->getId());
     }
+}
+class Producto extends Dato
+{
+
+    private string $id;
+    private string $nombre;
+    private string $precio;
+    private string $stock;
+
+    public function __construct( $id,  $nombre, $precio , $stock)
+    {
+        $this->id = $id;
+        $this->nombre=$nombre;
+        $this->precio=$precio;
+        $this->stock=$stock;
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function setId($nuevoId){
+         $this->id=$nuevoId;
+    }
+
+    public function getNombre(){
+        return $this->nombre;
+    }
+
+    public function setNombre($nuevoNombre){
+         $this->nombre=$nuevoNombre;
+    }
+
+
+    public function getPrecio(){
+        return $this->precio;
+    }
+
+    public function setPrecio($nuevoPrecio){
+         $this->precio=$nuevoPrecio;
+    }
+
+    public function getStock(){
+        return $this->stock;
+    }
+
+    public function setStock($nuevoStock){
+         $this->stock=$nuevoStock;
+    }
+
 }
