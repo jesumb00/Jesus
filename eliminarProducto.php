@@ -3,7 +3,7 @@ require_once "./_com/__RequireOnceComunes.php";
 
 $id = (int)$_REQUEST["id"];
 
-$eliminadoCorrectamente=DAO:: categoriaEliminarPorId($id);
+$eliminadoCorrectamente=DAO:: productoEliminarPorId($id);
 
 ?>
 
