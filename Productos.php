@@ -38,5 +38,7 @@ $productos=DAO::productosObtenerTodas();
 
 </table>
 
+<a href="crearProducto.php">Crear Producto</a>
+
 </body>
 </html>

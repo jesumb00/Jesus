@@ -233,7 +233,7 @@ class DAO
         return new Producto($fila["id"], $fila["denominacion"], $fila["precioUnidad"], $fila["stock"]);
     }
 
-     static function productosObtenerTodas(): array
+    static function productosObtenerTodas(): array
     {
         $rs = Self::ejecutarConsulta(
             "SELECT * FROM producto",
@@ -257,6 +257,17 @@ class DAO
         );
 
         return ($filasAfectadas == 1);
+    }
+
+    static function productoCrear(string $nombre, string $precio, string $stock)
+    {
+        $idAutogenerado = Self::ejecutarInsert(
+            "INSERT INTO producto  VALUES (?, ?, ?)",
+            [$nombre, $precio, $stock]
+        );
+
+        if ($idAutogenerado == null) return null;
+        else return 1;
     }
 
 }
