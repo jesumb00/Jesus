@@ -5,12 +5,8 @@
     $nombre = $_REQUEST["nombre"];
     $precio=$_REQUEST["precio"];
     $stock=$_REQUEST["stock"];
-    
 
-    
-    
-
-    $correcto=productoCrear( $nombre,  $precio, $stock);
+    $correcto=DAO::productoCrear($nombre,  $precio, $stock);
     
 ?>
 
@@ -27,10 +23,10 @@
 
     <?php if (!$correcto) { ?>
         <h1>Inserción completada</h1>
-        <p>Se ha insertado correctamente la nueva entrada de <?= $categoria->getNombre(); ?>.</p>
+        <p>Se ha insertado correctamente la nueva entrada de <?= $nombre; ?>.</p>
     <?php } else { ?>
         <h1>Error/h1>
-        <p>Se han guardado correctamente los nuevos datos de <?= $categoria->getNombre();} ?></p>
+        <p>Se han guardado correctamente los nuevos datos de <?= $nombre; }?></p>
 
 
         <a href='Productos.php'>Productos</a>
