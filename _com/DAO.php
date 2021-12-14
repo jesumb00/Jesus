@@ -12,7 +12,7 @@ class DAO
         $servidor = "localhost";
         $identificador = "root";
         $contrasenna = "";
-        $bd = "agenda"; // Schema
+        $bd = "tienda"; // Schema
         $opciones = [
             PDO::ATTR_EMULATE_PREPARES => false, // Modo emulación desactivado para prepared statements "reales"
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // Que los errores salgan como excepciones.
@@ -225,4 +225,49 @@ class DAO
     {
         return Self::personaEliminarPorId($persona->id);
     }
+
+    // PRODUCTO
+
+    private static function productoCrearDesdeFila(array $fila): Producto
+    {
+        return new Producto($fila["id"], $fila["denominacion"], $fila["precioUnidad"], $fila["stock"]);
+    }
+
+    public static function productosObtenerTodas(): array
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM producto",
+            []
+        );
+
+        $datos = [];
+        foreach ($rs as $fila) {
+            $producto = Self::productoCrearDesdeFila($fila);
+            array_push($datos, $producto);
+        }
+
+        return $datos;
+    }
+
+    public static function productoEliminarPorId(int $id): bool
+    {
+        $filasAfectadas = Self::ejecutarUpdel(
+            "DELETE FROM producto WHERE id=?",
+            [$id]
+        );
+
+        return ($filasAfectadas == 1);
+    }
+
+    public static function productoCrear(string $nombre, string $precio, string $stock)
+    {
+        $idAutogenerado = Self::ejecutarInsert(
+            "INSERT INTO producto  VALUES (NULL ,?, ?, ?)",
+            [$nombre, $precio, $stock]
+        );
+
+        if ($idAutogenerado == null) return null;
+        else return 1;
+    }
+
 }
