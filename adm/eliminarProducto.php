@@ -1,5 +1,5 @@
 <?php
-require_once "./_com/__RequireOnceComunes.php";
+require_once "../_com/__RequireOnceComunes.php";
 
 $id = (int)$_REQUEST["id"];
 

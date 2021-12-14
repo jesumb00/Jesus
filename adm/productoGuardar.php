@@ -1,5 +1,5 @@
 <?php
-    require_once "./_com/__RequireOnceComunes.php";
+    require_once "../_com/__RequireOnceComunes.php";
 
     // Se recogen los datos del formulario de la request, excepto id.
     $nombre = $_REQUEST["nombre"];
@@ -21,12 +21,12 @@
 <body>
 
 
-    <?php if (!$correcto) { ?>
+    <?php if ($correcto) { ?>
         <h1>Inserción completada</h1>
         <p>Se ha insertado correctamente la nueva entrada de <?= $nombre; ?>.</p>
     <?php } else { ?>
-        <h1>Error/h1>
-        <p>Se han guardado correctamente los nuevos datos de <?= $nombre; }?></p>
+        <h1>Error/<h1>
+        <p> Error al crear el producto <?= $nombre; }?></p>
 
 
         <a href='Productos.php'>Productos</a>

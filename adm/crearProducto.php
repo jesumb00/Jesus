@@ -1,5 +1,5 @@
 <?php
-    require_once "./_com/__RequireOnceComunes.php";
+    require_once "../_com/__RequireOnceComunes.php";
 
     // Si NO viene id quieren CREAR una nueva entrada ($existe tomará false).
     // Sin embargo, si VIENE id quieren VER la ficha de una categoría existente
