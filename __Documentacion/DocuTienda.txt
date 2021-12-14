@@ -7,3 +7,24 @@ ROLES:
     ton: tienda online, usuarios particulares que entran a la web a comprar productos
     prf: perfil propio: nombre, email, dirección...
     log: sistema de logging
+
+
+PROPUESTAS GESTION FICHEROS:
+------------------------------------------
+
+-- ROLES -> TIPO
+
+-> Clases:
+    -- Categoria
+    -- Persona
+    -- Producto
+    -- ....
+-> Com
+-> SistemaLogeo
+-> NivelUsuario/_ComunUsuario:
+    -> Categoria
+    -> Producto
+    -> Persona
+    -> ConfiguracionPropiaUsuario
+
+------------------------------------------
