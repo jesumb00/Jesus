@@ -1,7 +1,9 @@
 Aquí podemos anotar cosas que tener en cuenta, decisiones tomadas, temas pendientes en general, etc.
 
-Carpetas:
-adm: cosas de administrador: gestionar productos, gestionar usuarios, etc.
-caj: cosas de cajero: crear y cerrar tickets, añadir productos, etc.
-log: trabajador de centro de logística, preparando paquetes
-ton: tienda online, usuarios particulares que entran a la web a comprar productos 
+ROLES:
+    adm: cosas de administrador: gestionar productos, gestionar usuarios, etc.
+    caj: cosas de cajero: crear y cerrar tickets, añadir productos, etc.
+    paq: trabajador de centro de paquetería/logística, preparando paquetes para enviar pedidos
+    ton: tienda online, usuarios particulares que entran a la web a comprar productos
+    prf: perfil propio: nombre, email, dirección...
+    log: sistema de logging
