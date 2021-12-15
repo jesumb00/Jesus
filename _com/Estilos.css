@@ -1,39 +1,14 @@
-#personasTabla > div {
-    display: table;
-    width: 90%;
-}
-
-#personasTabla > div > div {
-    display: table-row;
-    width: 100%;
-}
-
-#personasTabla > div > div > div {
-    display: table-cell;
-    text-align: center;
-    border: 1px solid silver;
-    width: 16.67%;
-    padding: 1px;
-}
-
-#personasTabla > div > div > div > input {
-    width: 100%;
-    border: none;
-}
-
-
-
-#productoTabla > div {
+#secTabla > div {
     display: table;
     width: 40%;
 }
 
-#productoTabla > div > div {
+#secTabla > div > div {
     display: table-row;
     width: 100%;
 }
 
-#productoTabla > div > div > div {
+#secTabla > div > div > div {
     display: table-cell;
     text-align: center;
     border: 1px solid silver;
@@ -41,7 +16,7 @@
     padding: 1px;
 }
 
-#productoTabla > div > div > div > input {
+#secTabla > div > div > div > input {
     width: 100%;
     border: none;
 }
