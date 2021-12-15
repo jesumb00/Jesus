@@ -5,6 +5,6 @@ require_once "_com/DAO.php";
 
 $categoria = new Categoria($_REQUEST["id"], $_REQUEST["nombre"]);
 
-$categoria = DAO::personaActualizar($categoria);
+$categoria = DAO::categoriaActualizar($categoria);
 
 echo json_encode($categoria);

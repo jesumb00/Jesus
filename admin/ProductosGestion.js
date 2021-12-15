@@ -2,11 +2,9 @@
 
 
 
-window.onload = inicializar;
-
-
-
 // ---------- VARIOS DE BASE/UTILIDADES ----------
+
+window.onload = inicializar;
 
 function notificarUsuario(texto) {
     // TODO En lugar del alert, habría que añadir una línea en una zona de notificaciones, arriba, con un temporizador para que se borre solo en ¿5? segundos.
@@ -70,7 +68,7 @@ function inicializar() {
             }
         },
         function(texto) {
-            notificarUsuario("Error Ajax al cargar categorías al inicializar: " + texto);
+            notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
         }
     );
 }
