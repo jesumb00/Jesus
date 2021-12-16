@@ -1,6 +1,7 @@
 <?php
 
-require_once "__RequireOnceComunes.php";
+require_once "Clases.php";
+require_once "Varios.php";
 
 class DAO
 {
@@ -117,4 +118,5 @@ class DAO
         if ($idAutogenerado == null) return null;
         else return 1;
     }
+
 }
