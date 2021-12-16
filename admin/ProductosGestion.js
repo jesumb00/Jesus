@@ -65,14 +65,21 @@ function inicializar() {
 
             for (var i=0; i<productos.length; i++) {
                 domInsertar(productos[i]);
-                //alert(productos[i].tipo);
+                addProductoSelectFiltro(productos[i]); //-------------------
             }
+            document.getElementById("selectTipos").addEventListener("click", realizarFiltro, false);
         },
         function(texto) {
             alert(productos);
             notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
         }
     );
+}
+
+function realizarFiltro(e) {
+    //TODO seguir trabajando en esto. La idea es que recargue datos mostrando solo los que tengan de tipo el e
+    var filtrarPor = e.target.result;
+
 }
 
 function clickCrear() {
@@ -95,6 +102,27 @@ function clickCrear() {
         }
     );
 }
+
+function addProductoSelectFiltro(productoActual) {
+    //SOY CONSCIENTE de que seria mejor inicializar el select al cargar pagina
+    //para no tener que hacerlo por cada elemento de la BBDD.
+    var select = document.getElementById("selectTipos");
+    var optionsExistentes = select.options;
+    var existe = false;
+    for (let i = 0; i < optionsExistentes.length; i++) {
+        if (optionsExistentes[i].value == productoActual.tipo) {
+            existe = true;
+        }
+    }
+    if (!existe) {
+        var opcion = new Option(productoActual.tipo, productoActual.tipo);
+        select.appendChild(opcion);
+    }
+    existe = false;
+}
+
+
+
 
 function blurModificar(input) {
     let div = input.parentElement.parentElement;
