@@ -6,6 +6,7 @@
 
 window.onload = inicializar;
 var productosInicio; //----
+var todosLosDatosCargados = false;
 function notificarUsuario(texto) {
     // TODO En lugar del alert, habría que añadir una línea en una zona de notificaciones, arriba, con un temporizador para que se borre solo en ¿5? segundos.
     alert(texto);
@@ -68,6 +69,7 @@ function inicializar() {
                 domInsertar(productosInicio[i]);
                 addProductoSelectFiltro(productosInicio[i]); //-------------------
             }
+            todosLosDatosCargados = true;
             document.getElementById("selectTipos").addEventListener("click", realizarFiltro, false);
         },
         function(texto) {
@@ -81,22 +83,44 @@ function realizarFiltro(e) {
     eliminarTodosLosHijosDivDatos();
     //Aqui obtengo el valor que elije el usuario para hacer el filtrado
     var filtrarPor = e.target.value;
-    llamadaAjax("ProductoObtenerFiltrados.php?filtro="+filtrarPor, "",
-        function(texto) {
-           var producto = JSON.parse(texto);
+    if (filtrarPor == "Todos" && !todosLosDatosCargados) {
+        //si el usuario ha filtrado por "Todos" y no estan ya cargados todos los datos entonces muestro todos los datos
+        llamadaAjax("ProductoObtenerTodos.php", "",
+            function(texto) {
+                productosInicio = JSON.parse(texto);
 
-            for (var i=0; i<producto.length; i++) {
-                domInsertar(producto[i]);
-                addProductoSelectFiltro(producto[i]); //-------------------
+                for (var i=0; i<productosInicio.length; i++) {
+                    domInsertar(productosInicio[i]);
+                    addProductoSelectFiltro(productosInicio[i]); //-------------------
+                }
+                todosLosDatosCargados = true;
+                document.getElementById("selectTipos").addEventListener("click", realizarFiltro, false);
+            },
+            function(texto) {
+                alert(productos);
+                notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
             }
-        },
-        function(texto) {
-            alert(productos);
-            notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
-        }
-    );
+        );
+    } else {
+        //si el usuario a seleccionado un filtro determinado aplico la busqueda segun dicho filtro
+        llamadaAjax("ProductoObtenerFiltrados.php?filtro="+filtrarPor, "",
+            function(texto) {
+                var producto = JSON.parse(texto);
 
+                for (var i=0; i<producto.length; i++) {
+                    domInsertar(producto[i]);
+                    addProductoSelectFiltro(producto[i]); //-------------------
+                }
+            },
+            function(texto) {
+                alert(productos);
+                notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
+            }
+        );
+    }
 }
+
+
 //Este metodo elimina todos los div que el metodo de obtener todos los productos crea
 function eliminarTodosLosHijosDivDatos() {
     var divHijos = document.getElementById("divDatos").children;
@@ -106,6 +130,7 @@ function eliminarTodosLosHijosDivDatos() {
         divHijos[cont].remove();
         cont--;
     }
+    todosLosDatosCargados = false;
 }
 
 
