@@ -2,6 +2,6 @@
 
 require_once "../_com/__RequireOnceComunes.php";
 
-$categoria = DAO::categoriaCrear($_REQUEST["nombre"]);
+$producto = DAO::productoCrear($_REQUEST["nombre"], $_REQUEST["precio"], $_REQUEST["stock"]);
 
-echo json_encode($categoria);
+echo json_encode($producto);

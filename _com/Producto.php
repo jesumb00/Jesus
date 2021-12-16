@@ -9,21 +9,24 @@ class Producto extends Dato
     private string $denominacion;
     private string $precio;
     private string $stock;
+    private ?Producto $producto = null;
 
     public function __construct($id, $denominacion, $precio, $stock)
     {
         $this->id = $id;
-        $this->denominacion=$denominacion;
-        $this->precio=$precio;
-        $this->stock=$stock;
+        $this->denominacion= $denominacion;
+        $this->precio= $precio;
+        $this->stock= $stock;
     }
 
-    public function getDenominacion(){
+    public function getDenominacion(): string
+    {
         return $this->denominacion;
     }
 
-    public function setDenominacion($denominacion){
-        $this->denominacion=$denominacion;
+    public function setDenominacion(string $denominacion): void
+    {
+        $this->denominacion= $denominacion;
     }
 
     public function getPrecio(){

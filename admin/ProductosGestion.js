@@ -76,8 +76,17 @@ function inicializar() {
 
 function clickCrear() {
     inpNombre.disabled = true;
+    inpPrecio.disabled = true;
+    inpStock.disabled = true;
 
-    llamadaAjax("ProductoCrear.php", "nombre=" + inpNombre.value,
+    let producto = {
+        "id" : -1,
+        "nombre" : inpNombre.value,
+        "precio" : inpPrecio.value,
+        "stock" : inpStock.value
+    }
+
+    llamadaAjax("ProductoCrear.php", objetoAParametrosParaRequest(producto),
         function(texto) {
             // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
             var producto = JSON.parse(texto);
@@ -87,10 +96,16 @@ function clickCrear() {
 
             inpNombre.value = "";
             inpNombre.disabled = false;
+            inpPrecio.value = "";
+            inpPrecio.disabled = false;
+            inpStock.value = "";
+            inpStock.disabled = false;
         },
         function(texto) {
             notificarUsuario("Error Ajax al crear: " + texto);
             inpNombre.disabled = false;
+            inpPrecio.disabled = false;
+            inpStock.disabled = false;
         }
     );
 }
@@ -160,6 +175,8 @@ function domObjetoADiv(producto) {
     let div = document.createElement("div");
             div.setAttribute("id", "producto-" + producto.id);
     div.appendChild(domCrearDivInputText(producto.denominacion, "blurModificar(this);"));
+    div.appendChild(domCrearDivInputText(producto.precio, "blurModificar(this);"));
+    div.appendChild(domCrearDivInputText(producto.stock, "blurModificar(this);"));
     div.appendChild(domCrearDivIcon("fa fa-trash", "clickEliminar(" + producto.id + ");"));
 
     return div;
@@ -172,8 +189,10 @@ function domObtenerDiv(pos) {
 function domDivAObjeto(div) {
     return { // Devolvemos un objeto recién creado con los datos que hemos obtenido.
         "id": extraerId(div.id),
-        "nombre": div.children[0].children[0].value,
-    };
+        "denominacion": div.children[0].children[0].value,
+        "precio": div.children[1].children[0].value,
+        "stock": div.children[2].children[0].value,
+    }
 }
 
 function domObtenerObjeto(pos) {
@@ -194,7 +213,7 @@ function domInsertar(productoNueva, enOrden=false) {
         for (let pos=0; pos < divDatos.children.length; pos++) {
             let productoActual = domObtenerObjeto(pos);
 
-            if (productoNueva.nombre.localeCompare(productoActual.nombre) == -1) {
+            if (productoNueva.denominacion.localeCompare(productoActual.denominacion) == -1) {
                 // Si la categoría nueva va ANTES que la actual, este es el punto en el que insertarla.
                 domEjecutarInsercion(pos, productoNueva);
                 return;
@@ -227,7 +246,7 @@ function domEliminar(id) {
 
 function domModificar(producto) {
     domEliminar(producto.id);
-
+debugger
     // Se fuerza la ordenación, ya que este elemento podría no quedar ordenado si se pone al final.
     domInsertar(producto, true);
 }

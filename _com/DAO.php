@@ -117,4 +117,15 @@ class DAO
         if ($idAutogenerado == null) return null;
         else return 1;
     }
+
+    public static function productoActualizar(Producto $producto): ?Producto
+    {
+        $filasAfectadas = Self::ejecutarUpdel(
+            "UPDATE producto SET denominacion=?, precioUnidad=?, stock=? WHERE id=?",
+            [$producto->getDenominacion(), $producto->getPrecio(), $producto->getStock(), $producto->getId()]
+        );
+
+        if ($filasAfectadas === null) return null; // Necesario triple igual porque si no considera que 0 sí es igual a null
+        else return $producto;
+    }
 }
