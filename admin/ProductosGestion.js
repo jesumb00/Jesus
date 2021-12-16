@@ -65,6 +65,7 @@ function inicializar() {
 
             for (var i=0; i<productos.length; i++) {
                 domInsertar(productos[i]);
+                //alert(productos[i].tipo);
             }
         },
         function(texto) {
@@ -160,6 +161,7 @@ function domObjetoADiv(producto) {
     let div = document.createElement("div");
             div.setAttribute("id", "producto-" + producto.id);
     div.appendChild(domCrearDivInputText(producto.denominacion, "blurModificar(this);"));
+    div.appendChild(domCrearDivInputText(producto.tipo, "blurModificar(this);")); //-----------
     div.appendChild(domCrearDivIcon("fa fa-trash", "clickEliminar(" + producto.id + ");"));
 
     return div;
@@ -197,6 +199,7 @@ function domInsertar(productoNueva, enOrden=false) {
             if (productoNueva.nombre.localeCompare(productoActual.nombre) == -1) {
                 // Si la categoría nueva va ANTES que la actual, este es el punto en el que insertarla.
                 domEjecutarInsercion(pos, productoNueva);
+
                 return;
             }
         }

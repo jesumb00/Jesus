@@ -78,7 +78,7 @@ class DAO
 
     private static function productoCrearDesdeFila(array $fila): Producto
     {
-        return new Producto($fila["id"], $fila["denominacion"], $fila["precioUnidad"], $fila["stock"]);
+        return new Producto($fila["id"], $fila["denominacion"], $fila["tipo"], $fila["precioUnidad"], $fila["stock"]);
     }
 
     public static function productoObtenerTodos(): array
