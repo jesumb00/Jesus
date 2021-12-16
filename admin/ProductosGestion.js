@@ -5,7 +5,7 @@
 // ---------- VARIOS DE BASE/UTILIDADES ----------
 
 window.onload = inicializar;
-
+var productosInicio; //----
 function notificarUsuario(texto) {
     // TODO En lugar del alert, habría que añadir una línea en una zona de notificaciones, arriba, con un temporizador para que se borre solo en ¿5? segundos.
     alert(texto);
@@ -42,6 +42,7 @@ function objetoAParametrosParaRequest(objeto) {
     return new URLSearchParams(objeto).toString();
 }
 
+
 function debug() {
     // Esto es útil durante el desarrollo para programar el disparado de acciones concretas mediante un simple botón.
 }
@@ -61,11 +62,11 @@ function inicializar() {
 
     llamadaAjax("ProductoObtenerTodos.php", "",
         function(texto) {
-            var productos = JSON.parse(texto);
+             productosInicio = JSON.parse(texto);
 
-            for (var i=0; i<productos.length; i++) {
-                domInsertar(productos[i]);
-                addProductoSelectFiltro(productos[i]); //-------------------
+            for (var i=0; i<productosInicio.length; i++) {
+                domInsertar(productosInicio[i]);
+                addProductoSelectFiltro(productosInicio[i]); //-------------------
             }
             document.getElementById("selectTipos").addEventListener("click", realizarFiltro, false);
         },
@@ -77,10 +78,36 @@ function inicializar() {
 }
 
 function realizarFiltro(e) {
-    //TODO seguir trabajando en esto. La idea es que recargue datos mostrando solo los que tengan de tipo el e
-    var filtrarPor = e.target.result;
+    eliminarTodosLosHijosDivDatos();
+    //Aqui obtengo el valor que elije el usuario para hacer el filtrado
+    var filtrarPor = e.target.value;
+    llamadaAjax("ProductoObtenerFiltrados.php?filtro="+filtrarPor, "",
+        function(texto) {
+           var producto = JSON.parse(texto);
+
+            for (var i=0; i<producto.length; i++) {
+                domInsertar(producto[i]);
+                addProductoSelectFiltro(producto[i]); //-------------------
+            }
+        },
+        function(texto) {
+            alert(productos);
+            notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
+        }
+    );
 
 }
+//Este metodo elimina todos los div que el metodo de obtener todos los productos crea
+function eliminarTodosLosHijosDivDatos() {
+    var divHijos = document.getElementById("divDatos").children;
+    var numDivs = divHijos.length;
+    var cont = numDivs - 1;
+    while (divHijos.length > 0) {
+        divHijos[cont].remove();
+        cont--;
+    }
+}
+
 
 function clickCrear() {
     inpNombre.disabled = true;
@@ -104,7 +131,7 @@ function clickCrear() {
 }
 
 function addProductoSelectFiltro(productoActual) {
-    //SOY CONSCIENTE de que seria mejor inicializar el select al cargar pagina
+    //TODO SOY CONSCIENTE de que seria mejor inicializar el select al cargar pagina
     //para no tener que hacerlo por cada elemento de la BBDD.
     var select = document.getElementById("selectTipos");
     var optionsExistentes = select.options;
