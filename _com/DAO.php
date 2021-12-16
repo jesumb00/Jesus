@@ -1,7 +1,6 @@
 <?php
 
-require_once "Clases.php";
-require_once "Varios.php";
+require_once "__RequireOnceComunes.php";
 
 class DAO
 {
@@ -82,7 +81,7 @@ class DAO
         return new Producto($fila["id"], $fila["denominacion"], $fila["precioUnidad"], $fila["stock"]);
     }
 
-    public static function productosObtenerTodos(): array
+    public static function productoObtenerTodos(): array
     {
         $rs = Self::ejecutarConsulta(
             "SELECT * FROM producto ORDER BY denominacion",
@@ -118,5 +117,4 @@ class DAO
         if ($idAutogenerado == null) return null;
         else return 1;
     }
-
 }

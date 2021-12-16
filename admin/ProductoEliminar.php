@@ -1,7 +1,7 @@
 <?php
 
-require_once "_com/DAO.php";
+require_once "../_com/__RequireOnceComunes.php";
 
-$resultado = DAO::categoriaEliminarPorId($_REQUEST["id"]);
+$resultado = DAO::productoEliminarPorId($_REQUEST["id"]);
 
 echo json_encode($resultado);

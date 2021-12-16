@@ -68,6 +68,7 @@ function inicializar() {
             }
         },
         function(texto) {
+            alert(productos);
             notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
         }
     );
@@ -145,23 +146,21 @@ function domCrearDivInputText(textoValue, codigoOnblur) {
     return div;
 }
 
-function domCrearDivImg(urlSrc, codigoOnclick) {
+function domCrearDivIcon(clase, codigoOnclick) {
     let div = document.createElement("div");
-        let img = document.createElement("img");
-                img.setAttribute("src", urlSrc);
-                img.setAttribute("onclick", codigoOnclick + " return false;");
-    div.appendChild(img);
+        let i = document.createElement("i");
+                i.setAttribute("class", clase);
+                i.setAttribute("onclick", codigoOnclick + " return false;");
+    div.appendChild(i);
 
     return div;
 }
 
-
-
 function domObjetoADiv(producto) {
     let div = document.createElement("div");
             div.setAttribute("id", "producto-" + producto.id);
-    div.appendChild(domCrearDivInputText(producto.nombre, "blurModificar(this);"));
-    div.appendChild(domCrearDivImg("../_img/Eliminar.png", "clickEliminar(" + producto.id + ");"));
+    div.appendChild(domCrearDivInputText(producto.denominacion, "blurModificar(this);"));
+    div.appendChild(domCrearDivIcon("fa fa-trash", "clickEliminar(" + producto.id + ");"));
 
     return div;
 }

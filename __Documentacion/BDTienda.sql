@@ -16,7 +16,7 @@ CREATE TABLE `ticket` (
   `id` int(3)  AUTO_INCREMENT ,
   `apertura` DATETIME  NOT NULL,
   `cierre` DATETIME ,
-  `empleado_id` int(2),
+  `empleadoId` int(2),
   PRIMARY KEY (id)
 );
 
@@ -27,12 +27,12 @@ CREATE TABLE `puesto` (
 
 
 CREATE TABLE `linea` (
-  `ticket_id` int(3)  AUTO_INCREMENT ,
-  `producto_id` int(3)  NOT NULL ,
+  `ticketId` int(3)  AUTO_INCREMENT ,
+  `productoId` int(3)  NOT NULL ,
   `unidades` int(3)  NOT NULL,
   `precioUnidad` DECIMAL(5,2)  NOT NULL,
-   FOREIGN KEY (ticket_id) REFERENCES ticket(id),
-   FOREIGN KEY (producto_id) REFERENCES producto(id)
+   FOREIGN KEY (ticketId) REFERENCES ticket(id),
+   FOREIGN KEY (productoId) REFERENCES producto(id)
 );
 
 
