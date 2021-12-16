@@ -85,7 +85,7 @@ class DAO
     public static function productosObtenerTodos(): array
     {
         $rs = Self::ejecutarConsulta(
-            "SELECT * FROM producto",
+            "SELECT * FROM producto ORDER BY denominacion",
             []
         );
 
