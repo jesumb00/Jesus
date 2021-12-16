@@ -6,133 +6,70 @@ class Ticket extends Dato
 {
     use Identificable;
 
-    private string $cif;
-    private int $numeroTicket;
-    private date $fechaHora;
-    private string $lugar;
-    private int $caja;
-    private int $precio;
-    private bool $descuento;
-    private int $total;
 
-    private ?array $personasPertenecientes = null;
 
-    public function __construct(int $id, string $cif,int $numeroTicket,date $fechaHora,string $lugar,int $caja,int $precio,bool $descuento,int $total)
+    private DateTime $apertura;
+    private DateTime $cierre;
+    private int $empleadoId;
+
+
+    public function __construct(int $id,DateTime $apertura,DateTime $cierre,int $empleadoId)
     {
         $this->id = $id;
-        $this->setCif($cif);
-        $this->setNumeroTicket($numeroTicket);
-        $this->setFechaHora($fechaHora);
-        $this->setLugar($lugar);
-        $this->setCaja($caja);
-        $this->setPrecio($precio);
-        $this->setDescuento($descuento);
-        $this->setTotal($total);
+        $this->setApertura($apertura);
+        $this->setApertura($cierre);
+        $this->setApertura($empleadoId);
     }
 
-    public function getCif(): string
+    public function setId(int $id)
     {
-        return $this->cif;
+        $this->id = $id;
     }
 
-    public function setCif(string $cif)
+    public function getApertura(): DateTime
     {
-        $this->cif = $cif;
-    }
-    public function getNumeroTikect(): int
-    {
-        return $this->numeroTicket;
+        return $this->apertura;
     }
 
-    public function setNumeroTicket(int $numeroTicket)
+    public function setApertura(DateTime $apertura)
     {
-        $this->numeroTicket = $numeroTicket;
+        $this->apertura = $apertura;
     }
 
-    public function getFechaHora(): date
+    public function getCierre(): DateTime
     {
-        return $this->fechaHora;
+        return $this->cierre;
     }
 
-    public function setFechaHora(date $fechaHora)
+    public function setCierre(DateTime $cierre)
     {
-        $this->fechaHora = $fechaHora;
+        $this->cierre = $cierre;
     }
 
-    public function getLugar(): string
+    public function getEmpleadoId(): int
     {
-        return $this->lugar;
+        return $this->empleadoId;
     }
 
-    public function setLugar(string $lugar)
+    public function setEmpleadoId(int $empleadoId)
     {
-        $this->lugar = $lugar;
+        $this->empleadoId = $empleadoId;
     }
 
-    public function getCaja(): int
-    {
-        return $this->caja;
-    }
 
-    public function setCaja(int $caja)
-    {
-        $this->caja = $caja;
-    }
-
-    public function getPrecio(): int
-    {
-        return $this->precio;
-    }
-
-    public function setPrecio(int $precio)
-    {
-        $this->precio = $precio;
-    }
-
-    public function getDescuento(): bool
-    {
-        return $this->descuento;
-    }
-
-    public function setDescuento(int $descuento)
-    {
-        $this->descuento = $descuento;
-    }
-
-    public function getTotal(): int
-    {
-        return $this->total;
-    }
-
-    public function setTotal(int $total)
-    {
-        $this->total = $total;
-    }
 
     public function jsonSerialize()
     {
         return [
             "id" => $this->id,
-            "nombre" => $this->nombre,
+            "apertura" => $this->apertura,
+            "cierre" => $this->cierre,
+            "empleadoId" => $this->empleadoId,
         ];
 
         // Esto sería lo mismo:
         //$array["nombre"] = $this->nombre;
         //$array["id"] = $this->id;
         //return $array;
-    }
-
-    public function eliminar(): bool {
-        // Esto sería un control para NO eliminar una categoría si "contiene" personas.
-        if ($this->obtenerPersonasPertenecientes()) return false;
-
-        return DAO::categoriaEliminarPorId($this->id);
-    }
-
-    public function obtenerPersonasPertenecientes(): array
-    {
-        if ($this->personasPertenecientes == null) $personasPertenecientes = DAO::personaObtenerPorCategoria($this->id);
-
-        return $personasPertenecientes;
     }
 }
