@@ -2,7 +2,7 @@
 
 require_once "__RequireOnceComunes.php";
 
-class Trazas extends Dato
+class Traza extends Dato
 {
     use Identificable;
 
@@ -27,7 +27,7 @@ class Trazas extends Dato
         return $this->idUsuario;
     }
 
-    public function setIdUsuario($idUsuario)
+    private function setIdUsuario($idUsuario)
     {
         $this->idUsuario = $idUsuario;
     }
@@ -37,7 +37,7 @@ class Trazas extends Dato
         return $this->localizacion;
     }
 
-    public function setLocalizacion($localizacion)
+    private function setLocalizacion($localizacion)
     {
         $this->localizacion = $localizacion;
     }
@@ -47,7 +47,7 @@ class Trazas extends Dato
         return $this->hecho;
     }
 
-    public function setHecho($hecho)
+    private function setHecho($hecho)
     {
         $this->hecho = $hecho;
     }
@@ -56,7 +56,7 @@ class Trazas extends Dato
         return $this->posibleId;
     }
 
-    public function setPosibleId($posibleId)
+    private function setPosibleId($posibleId)
     {
         $this->posibleId = $posibleId;
     }
@@ -65,7 +65,7 @@ class Trazas extends Dato
         return $this->fecha;
     }
 
-    public function setFecha($fecha)
+    private function setFecha($fecha)
     {
         $this->fecha = $fecha;
     }
@@ -84,10 +84,5 @@ class Trazas extends Dato
         //$array["nombre"] = $this->nombre;
         //$array["id"] = $this->id;
         //return $array;
-    }
-
-    private function registroActividad(Trazas $traza)
-    {
-        
     }
 }
