@@ -40,7 +40,7 @@ CREATE TABLE `traza` (
   `localizacion` varchar(30) NOT NULL,
   `hecho` varchar(30) NOT NULL,
   `posibleId` int(3) ,
-  `fecha` varchar(3)
+  `fecha` varchar(30)
 ) ;
 
 INSERT INTO producto VALUES (1,'Patatas'    ,0.99 , 29),
