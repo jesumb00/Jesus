@@ -35,6 +35,13 @@ CREATE TABLE `linea` (
    FOREIGN KEY (productoId) REFERENCES producto(id)
 );
 
+CREATE TABLE `traza` (
+  `idUsuario` int(2) NOT NULL,
+  `localizacion` varchar(30) NOT NULL,
+  `hecho` varchar(30) NOT NULL,
+  `posibleId` int(3) ,
+  `fecha` varchar(3)
+) ;
 
 INSERT INTO producto VALUES (1,'Patatas'    ,0.99 , 29),
                             (2,'Pizza'      ,1.99 , 9),

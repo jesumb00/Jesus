@@ -117,4 +117,11 @@ class DAO
         if ($idAutogenerado == null) return null;
         else return 1;
     }
+
+    // traza
+
+    private static function trazaCrear(array $fila): Producto
+    {
+        return new Producto($fila["id"], $fila["denominacion"], $fila["precioUnidad"], $fila["stock"]);
+    }
 }
