@@ -6,7 +6,7 @@ class DAO
 {
     private static ?PDO $conexion = null;
 
-    private static function obtenerPdoConexionBD(): PDO
+    public static function obtenerPdoConexionBD(): PDO
     {
         $servidor = "localhost";
         $identificador = "root";

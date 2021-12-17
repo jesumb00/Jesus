@@ -35,6 +35,12 @@ CREATE TABLE `ticket` (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE `puesto` (
+  `id` int(3) NOT NULL PRIMARY KEY,
+  `denominacion` varchar(40)  NOT NULL
+);
+
+
 CREATE TABLE `linea` (
   `ticketId` int(3)  AUTO_INCREMENT ,
   `productoId` int(3)  NOT NULL ,
@@ -55,8 +61,13 @@ INSERT INTO producto VALUES (1,'Patatas'    ,0.99 , 29),
                             (8,'Manzana'    ,0.88 , 50),
                             (9,'Pera'       ,1.30 , 29);
 
-INSERT INTO ticket VALUES (1, '2021/04/15 16:00:00' ,  '2021/04/15 20:30:00' , 1),
-                          (2, '2021/04/15 16:01:55' ,  '2021/04/15 20:30:00' , 2);
+INSERT INTO ticket VALUES (1, '2021/04/15 16:00:00' ,  '2021/04/15 20:30:00' , 4),
+                          (2, '2021/04/15 16:01:55' ,  '2021/04/15 20:30:00' , 2),
+                          (3, '2021/04/15 16:01:56' , '2021/04/15 20:30:00'  , 2),
+                          (4, '2021/04/15 16:03:01' ,  '2021/04/15 20:30:00' , 5),
+                          (5, '2021/04/15 15:00:00' ,  '2021/04/15 20:30:00' , 7),
+                          (6, '2021/04/15 17:00:00' ,  '2021/04/15 20:30:00' , 8),
+                          (7, '2021/04/15 18:00:00' ,  '2021/04/15 20:30:00' , 1);
 
 INSERT INTO linea VALUES  (1, 2 , 55 , 4.99),
                           (1, 4 , 3  , 2.45),
@@ -71,6 +82,5 @@ VALUES
        (1, 'jlopez',    'j', NULL, NULL, 'ENCAR', 'José',   'López'),
        (2, 'mgarcia',   'm', NULL, NULL, 'CLWEB', 'María',  'García'),
        (3, 'fpi',       'f', NULL, NULL, 'ENCAR', 'Felipe', 'Pi');
-
 
 
