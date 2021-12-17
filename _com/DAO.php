@@ -81,6 +81,17 @@ class DAO
         return new Producto($fila["id"], $fila["denominacion"], $fila["precioUnidad"], $fila["stock"]);
     }
 
+    private static function productoObtenerPorId(int $id): ?Producto
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM producto WHERE id=?",
+            [$id]
+        );
+
+        if($rs) return Self::productoCrearDesdeFila($rs[0]);
+        else return null;
+    }
+
     public static function productoObtenerTodos(): array
     {
         $rs = Self::ejecutarConsulta(
@@ -107,14 +118,25 @@ class DAO
         return ($filasAfectadas == 1);
     }
 
-    public static function productoCrear(string $nombre, string $precio, string $stock)
+    public static function productoCrear(string $nombre, string $precioUnidad, string $stock)
     {
         $idAutogenerado = Self::ejecutarInsert(
             "INSERT INTO producto  VALUES (NULL ,?, ?, ?)",
-            [$nombre, $precio, $stock]
+            [$nombre, $precioUnidad, $stock]
         );
 
         if ($idAutogenerado == null) return null;
-        else return 1;
+        else return Self::productoObtenerPorId($idAutogenerado);
+    }
+
+    public static function productoActualizar(Producto $producto): ?Producto
+    {
+        $filasAfectadas = Self::ejecutarUpdel(
+            "UPDATE producto SET denominacion=?, precioUnidad=?, stock=? WHERE id=?",
+            [$producto->getDenominacion(), $producto->getPrecio(), $producto->getStock(), $producto->getId()]
+        );
+
+        if ($filasAfectadas === null) return null; // Necesario triple igual porque si no considera que 0 sí es igual a null
+        else return $producto;
     }
 }
