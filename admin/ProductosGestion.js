@@ -55,6 +55,7 @@ function debug() {
 // TODO Estaría genial que estos métodos no metieran la mano para nada en el DOM, sino que lo hicieran todo a través de métodos domTalCosa:
 // Por ejemplo: disablearCamposPersonaCrear(), enablearCamposPersonaCrear(), obtenerObjetoPersonaDeCamposPersonaCrear()...
 
+
 function inicializar() {
     btnCrear.onclick = clickCrear;
 
@@ -89,10 +90,9 @@ function realizarFiltro(e) {
         llamadaAjax("ProductoObtenerTodos.php", "",
             function(texto) {
                 productosInicio = JSON.parse(texto);
-
+                debugger
                 for (var i=0; i<productosInicio.length; i++) {
                     domInsertar(productosInicio[i]);
-                    addProductoSelectFiltro(productosInicio[i]); //-------------------
                 }
                 todosLosDatosCargados = true;
                 document.getElementById("selectTipos").addEventListener("click", realizarFiltro, false);
@@ -135,48 +135,32 @@ function eliminarTodosLosHijosDivDatos() {
 
 function clickCrear() {
     inpNombre.disabled = true;
-    inpTipo.disabled = true;
+    selTipos.disabled = true;
     inpPrecio.disabled = true;
     inpStock.disabled = true;
 
     let producto = {
         "id" : -1,
         "denominacion" : inpNombre.value,
-        "tipo" : inpTipo.value,
+        "tipo" : selTipos.value,
         "precio" : inpPrecio.value,
         "stock" : inpStock.value
     }
-    function addProductoSelectFiltro(nombreSelectHTMl, selectproductoActual) {
-        //TODO SOY CONSCIENTE de que seria mejor inicializar el select al cargar pagina
-        //para no tener que hacerlo por cada elemento de la BBDD.
-        var select = document.getElementById(nombreSelectHTMl);
-        var optionsExistentes = select.options;
-        var existe = false;
-        for (let i = 0; i < optionsExistentes.length; i++) {
-            if (optionsExistentes[i].value == productoActual.tipo) {
-                existe = true;
-            }
-        }
-        if (!existe) {
-            var opcion = new Option(productoActual.tipo, productoActual.tipo);
-            select.appendChild(opcion);
-        }
-        existe = false;
-    }
+
 
     llamadaAjax("ProductoCrear.php", objetoAParametrosParaRequest(producto),
         function(texto) {
         debugger
             // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
             var producto = JSON.parse(texto);
-
+             //productosInicio = JSON.parse(texto);
             // Se fuerza la ordenación, ya que este elemento podría no quedar ordenado si se pone al final.
             domInsertar(producto, true);
 
             inpNombre.value = "";
             inpNombre.disabled = false;
-            inpTipo.value = "";
-            inpTipo.disabled = false;
+            selTipos.value = "";
+            selTipos.disabled = false;
             inpPrecio.value = "";
             inpPrecio.disabled = false;
             inpStock.value = "";
@@ -185,20 +169,36 @@ function clickCrear() {
         function(texto) {
             notificarUsuario("Error Ajax al crear: " + texto);
             inpNombre.disabled = false;
-            inpTipo.disabled = false;
+            selTipos.disabled = false;
             inpPrecio.disabled = false;
             inpStock.disabled = false;
         }
     );
 }
 
+function addProductoSelectFiltro(nombreSelectHTMl, productoActual) {
+    //TODO SOY CONSCIENTE de que seria mejor inicializar el select al cargar pagina
+    //para no tener que hacerlo por cada elemento de la BBDD.
+    var select = document.getElementById(nombreSelectHTMl);
+    var optionsExistentes = select.options;
+    var existe = false;
+    for (let i = 0; i < optionsExistentes.length; i++) {
+        if (optionsExistentes[i].value == productoActual.tipo) {
+            existe = true;
+        }
+    }
+    if (!existe) {
+        var opcion = new Option(productoActual.tipo, productoActual.tipo);
+        select.appendChild(opcion);
+    }
+    existe = false;
+}
 function blurModificar(input) {
     let div = input.parentElement.parentElement;
     let producto = domDivAObjeto(div);
 
     llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
         function(texto) {
-        debugger
             if (texto != "null") {
                 // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
                 producto = JSON.parse(texto);
@@ -286,8 +286,9 @@ function domDivAObjeto(div) {
     return { // Devolvemos un objeto recién creado con los datos que hemos obtenido.
         "id": extraerId(div.id),
         "denominacion": div.children[0].children[0].value,
-        "precioUnidad": div.children[1].children[0].value,
-        "stock": div.children[2].children[0].value,
+        "tipo": div.children[1].children[0].value,
+        "precioUnidad": div.children[2].children[0].value,
+        "stock": div.children[3].children[0].value,
     }
 }
 
@@ -308,8 +309,8 @@ function domInsertar(productoNueva, enOrden=false) {
     if (enOrden) {
         for (let pos=0; pos < divDatos.children.length; pos++) {
             let productoActual = domObtenerObjeto(pos);
-            let cadenaActual = productoActual.denominacion + productoActual.precioUnidad + productoActual.stock + productoNueva.id;
-            let cadenaNueva = productoNueva.denominacion + productoNueva.precioUnidad + productoNueva.stock + productoNueva.id;
+            let cadenaActual = productoActual.denominacion + productoActual.tipo + productoActual.precioUnidad + productoActual.stock + productoNueva.id;
+            let cadenaNueva = productoNueva.denominacion + productoNueva.tipo + productoNueva.precioUnidad + productoNueva.stock + productoNueva.id;
 
             if (cadenaNueva.localeCompare(cadenaActual) == -1) {
                 // Si la categoría nueva va ANTES que la actual, este es el punto en el que insertarla.
