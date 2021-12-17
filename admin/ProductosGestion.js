@@ -81,13 +81,14 @@ function clickCrear() {
 
     let producto = {
         "id" : -1,
-        "nombre" : inpNombre.value,
-        "precio" : inpPrecio.value,
+        "denominacion" : inpNombre.value,
+        "precioUnidad" : inpPrecio.value,
         "stock" : inpStock.value
     }
 
     llamadaAjax("ProductoCrear.php", objetoAParametrosParaRequest(producto),
         function(texto) {
+        debugger
             // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
             var producto = JSON.parse(texto);
 
@@ -116,6 +117,7 @@ function blurModificar(input) {
 
     llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
         function(texto) {
+        debugger
             if (texto != "null") {
                 // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
                 producto = JSON.parse(texto);
@@ -175,7 +177,7 @@ function domObjetoADiv(producto) {
     let div = document.createElement("div");
             div.setAttribute("id", "producto-" + producto.id);
     div.appendChild(domCrearDivInputText(producto.denominacion, "blurModificar(this);"));
-    div.appendChild(domCrearDivInputText(producto.precio, "blurModificar(this);"));
+    div.appendChild(domCrearDivInputText(producto.precioUnidad, "blurModificar(this);"));
     div.appendChild(domCrearDivInputText(producto.stock, "blurModificar(this);"));
     div.appendChild(domCrearDivIcon("fa fa-trash", "clickEliminar(" + producto.id + ");"));
 
@@ -190,7 +192,7 @@ function domDivAObjeto(div) {
     return { // Devolvemos un objeto recién creado con los datos que hemos obtenido.
         "id": extraerId(div.id),
         "denominacion": div.children[0].children[0].value,
-        "precio": div.children[1].children[0].value,
+        "precioUnidad": div.children[1].children[0].value,
         "stock": div.children[2].children[0].value,
     }
 }
@@ -208,12 +210,14 @@ function domEjecutarInsercion(pos, producto) {
 }
 
 function domInsertar(productoNueva, enOrden=false) {
-    // Si piden insertar en orden, se buscará su lugar. Si no, irá al final.
+    // Si piden insertar en orden, se buscará su lugar. Si no, irá al final.ç
     if (enOrden) {
         for (let pos=0; pos < divDatos.children.length; pos++) {
             let productoActual = domObtenerObjeto(pos);
+            let cadenaActual = productoActual.denominacion + productoActual.precioUnidad + productoActual.stock + productoNueva.id;
+            let cadenaNueva = productoNueva.denominacion + productoNueva.precioUnidad + productoNueva.stock + productoNueva.id;
 
-            if (productoNueva.denominacion.localeCompare(productoActual.denominacion) == -1) {
+            if (cadenaNueva.localeCompare(cadenaActual) == -1) {
                 // Si la categoría nueva va ANTES que la actual, este es el punto en el que insertarla.
                 domEjecutarInsercion(pos, productoNueva);
                 return;

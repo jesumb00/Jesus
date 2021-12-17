@@ -7,15 +7,15 @@ class Producto extends Dato
     use Identificable;
 
     private string $denominacion;
-    private string $precio;
+    private string $precioUnidad;
     private string $stock;
     private ?Producto $producto = null;
 
-    public function __construct($id, $denominacion, $precio, $stock)
+    public function __construct($id, $denominacion, $precioUnidad, $stock)
     {
         $this->id = $id;
         $this->denominacion= $denominacion;
-        $this->precio= $precio;
+        $this->precioUnidad= $precioUnidad;
         $this->stock= $stock;
     }
 
@@ -30,11 +30,11 @@ class Producto extends Dato
     }
 
     public function getPrecio(){
-        return $this->precio;
+        return $this->precioUnidad;
     }
 
-    public function setPrecio($precio){
-        $this->precio=$precio;
+    public function setPrecio($precioUnidad){
+        $this->precioUnidad=$precioUnidad;
     }
 
     public function getStock(){
@@ -50,7 +50,7 @@ class Producto extends Dato
         return [
             "id" => $this->id,
             "denominacion" => $this->denominacion,
-            "precio" => $this->precio,
+            "precioUnidad" => $this->precioUnidad,
             "stock" => $this->stock,
         ];
 
