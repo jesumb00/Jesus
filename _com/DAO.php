@@ -78,7 +78,7 @@ class DAO
 
     private static function productoCrearDesdeFila(array $fila): Producto
     {
-        return new Producto($fila["id"], $fila["denominacion"], $fila["precioUnidad"], $fila["stock"]);
+        return new Producto($fila["id"], $fila["denominacion"], $fila["tipo"], $fila["precioUnidad"], $fila["stock"]);
     }
 
     private static function productoObtenerPorId(int $id): ?Producto
@@ -107,6 +107,25 @@ class DAO
 
         return $datos;
     }
+
+    //ESTA FUNCION ES LA QUE HE AÑADIDO YO
+ public static function productoObteneFiltrados($tipo): array
+{
+    $rs = Self::ejecutarConsulta(
+        "SELECT * FROM producto WHERE tipo = ?",
+        [$tipo]
+    );
+
+    $datos = [];
+    foreach ($rs as $fila) {
+        $producto = Self::productoCrearDesdeFila($fila);
+        array_push($datos, $producto);
+    }
+
+    return $datos;
+}
+
+
 
     public static function productoEliminarPorId(int $id): bool
     {

@@ -5,7 +5,8 @@
 // ---------- VARIOS DE BASE/UTILIDADES ----------
 
 window.onload = inicializar;
-
+var productosInicio; //----
+var todosLosDatosCargados = false;
 function notificarUsuario(texto) {
     // TODO En lugar del alert, habría que añadir una línea en una zona de notificaciones, arriba, con un temporizador para que se borre solo en ¿5? segundos.
     alert(texto);
@@ -42,6 +43,7 @@ function objetoAParametrosParaRequest(objeto) {
     return new URLSearchParams(objeto).toString();
 }
 
+
 function debug() {
     // Esto es útil durante el desarrollo para programar el disparado de acciones concretas mediante un simple botón.
 }
@@ -61,11 +63,14 @@ function inicializar() {
 
     llamadaAjax("ProductoObtenerTodos.php", "",
         function(texto) {
-            var productos = JSON.parse(texto);
+             productosInicio = JSON.parse(texto);
 
-            for (var i=0; i<productos.length; i++) {
-                domInsertar(productos[i]);
+            for (var i=0; i<productosInicio.length; i++) {
+                domInsertar(productosInicio[i]);
+                addProductoSelectFiltro(productosInicio[i]); //-------------------
             }
+            todosLosDatosCargados = true;
+            document.getElementById("selectTipos").addEventListener("click", realizarFiltro, false);
         },
         function(texto) {
             alert(productos);
@@ -74,21 +79,66 @@ function inicializar() {
     );
 }
 
+function realizarFiltro(e) {
+    eliminarTodosLosHijosDivDatos();
+    //Aqui obtengo el valor que elije el usuario para hacer el filtrado
+    var filtrarPor = e.target.value;
+    if (filtrarPor == "Todos" && !todosLosDatosCargados) {
+        //si el usuario ha filtrado por "Todos" y no estan ya cargados todos los datos entonces muestro todos los datos
+        llamadaAjax("ProductoObtenerTodos.php", "",
+            function(texto) {
+                productosInicio = JSON.parse(texto);
+
+                for (var i=0; i<productosInicio.length; i++) {
+                    domInsertar(productosInicio[i]);
+                    addProductoSelectFiltro(productosInicio[i]); //-------------------
+                }
+                todosLosDatosCargados = true;
+                document.getElementById("selectTipos").addEventListener("click", realizarFiltro, false);
+            },
+            function(texto) {
+                alert(productos);
+                notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
+            }
+        );
+    } else {
+        //si el usuario a seleccionado un filtro determinado aplico la busqueda segun dicho filtro
+        llamadaAjax("ProductoObtenerFiltrados.php?filtro="+filtrarPor, "",
+            function(texto) {
+                var producto = JSON.parse(texto);
+
+                for (var i=0; i<producto.length; i++) {
+                    domInsertar(producto[i]);
+                    addProductoSelectFiltro(producto[i]); //-------------------
+                }
+            },
+            function(texto) {
+                alert(productos);
+                notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
+            }
+        );
+    }
+}
+
+
+//Este metodo elimina todos los div que el metodo de obtener todos los productos crea
+function eliminarTodosLosHijosDivDatos() {
+    var divHijos = document.getElementById("divDatos").children;
+    var numDivs = divHijos.length;
+    var cont = numDivs - 1;
+    while (divHijos.length > 0) {
+        divHijos[cont].remove();
+        cont--;
+    }
+    todosLosDatosCargados = false;
+}
+
+
 function clickCrear() {
     inpNombre.disabled = true;
-    inpPrecio.disabled = true;
-    inpStock.disabled = true;
 
-    let producto = {
-        "id" : -1,
-        "denominacion" : inpNombre.value,
-        "precioUnidad" : inpPrecio.value,
-        "stock" : inpStock.value
-    }
-
-    llamadaAjax("ProductoCrear.php", objetoAParametrosParaRequest(producto),
+    llamadaAjax("ProductoCrear.php", "nombre=" + inpNombre.value,
         function(texto) {
-        debugger
             // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
             var producto = JSON.parse(texto);
 
@@ -97,19 +147,34 @@ function clickCrear() {
 
             inpNombre.value = "";
             inpNombre.disabled = false;
-            inpPrecio.value = "";
-            inpPrecio.disabled = false;
-            inpStock.value = "";
-            inpStock.disabled = false;
         },
         function(texto) {
             notificarUsuario("Error Ajax al crear: " + texto);
             inpNombre.disabled = false;
-            inpPrecio.disabled = false;
-            inpStock.disabled = false;
         }
     );
 }
+
+function addProductoSelectFiltro(productoActual) {
+    //TODO SOY CONSCIENTE de que seria mejor inicializar el select al cargar pagina
+    //para no tener que hacerlo por cada elemento de la BBDD.
+    var select = document.getElementById("selectTipos");
+    var optionsExistentes = select.options;
+    var existe = false;
+    for (let i = 0; i < optionsExistentes.length; i++) {
+        if (optionsExistentes[i].value == productoActual.tipo) {
+            existe = true;
+        }
+    }
+    if (!existe) {
+        var opcion = new Option(productoActual.tipo, productoActual.tipo);
+        select.appendChild(opcion);
+    }
+    existe = false;
+}
+
+
+
 
 function blurModificar(input) {
     let div = input.parentElement.parentElement;
@@ -117,7 +182,6 @@ function blurModificar(input) {
 
     llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
         function(texto) {
-        debugger
             if (texto != "null") {
                 // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
                 producto = JSON.parse(texto);
@@ -177,8 +241,7 @@ function domObjetoADiv(producto) {
     let div = document.createElement("div");
             div.setAttribute("id", "producto-" + producto.id);
     div.appendChild(domCrearDivInputText(producto.denominacion, "blurModificar(this);"));
-    div.appendChild(domCrearDivInputText(producto.precioUnidad, "blurModificar(this);"));
-    div.appendChild(domCrearDivInputText(producto.stock, "blurModificar(this);"));
+    div.appendChild(domCrearDivInputText(producto.tipo, "blurModificar(this);")); //-----------
     div.appendChild(domCrearDivIcon("fa fa-trash", "clickEliminar(" + producto.id + ");"));
 
     return div;
@@ -191,10 +254,8 @@ function domObtenerDiv(pos) {
 function domDivAObjeto(div) {
     return { // Devolvemos un objeto recién creado con los datos que hemos obtenido.
         "id": extraerId(div.id),
-        "denominacion": div.children[0].children[0].value,
-        "precioUnidad": div.children[1].children[0].value,
-        "stock": div.children[2].children[0].value,
-    }
+        "nombre": div.children[0].children[0].value,
+    };
 }
 
 function domObtenerObjeto(pos) {
@@ -210,16 +271,15 @@ function domEjecutarInsercion(pos, producto) {
 }
 
 function domInsertar(productoNueva, enOrden=false) {
-    // Si piden insertar en orden, se buscará su lugar. Si no, irá al final.ç
+    // Si piden insertar en orden, se buscará su lugar. Si no, irá al final.
     if (enOrden) {
         for (let pos=0; pos < divDatos.children.length; pos++) {
             let productoActual = domObtenerObjeto(pos);
-            let cadenaActual = productoActual.denominacion + productoActual.precioUnidad + productoActual.stock + productoNueva.id;
-            let cadenaNueva = productoNueva.denominacion + productoNueva.precioUnidad + productoNueva.stock + productoNueva.id;
 
-            if (cadenaNueva.localeCompare(cadenaActual) == -1) {
+            if (productoNueva.nombre.localeCompare(productoActual.nombre) == -1) {
                 // Si la categoría nueva va ANTES que la actual, este es el punto en el que insertarla.
                 domEjecutarInsercion(pos, productoNueva);
+
                 return;
             }
         }
@@ -250,7 +310,7 @@ function domEliminar(id) {
 
 function domModificar(producto) {
     domEliminar(producto.id);
-debugger
+
     // Se fuerza la ordenación, ya que este elemento podría no quedar ordenado si se pone al final.
     domInsertar(producto, true);
 }
