@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil Usuario</title>
+    <script>
+        addEventListener("load",cargar);
+        function cargar() {
+            document.getElementById("mostrarOculto").addEventListener("mouseover", mostrarContrasenna);
+        }
+        function mostrarContrasenna(){
+            var tipo=document.getElementById("contrasenna");
+            if(tipo.type=="password"){
+                tipo.type="text";
+                document.getElementById("mostrarOculto").addEventListener("mouseout", ocultarContrasenna);
+        }}
+        function ocultarContrasenna(){
+            var tipo=document.getElementById("contrasenna");
+            if(tipo.type=="text"){
+                tipo.type="password";
+            }}
+
+    </script>
+    <style>
+        section{
+            width: 15.5%;
+        }
+        #mostrarOculto{
+            border-radius: 12em;
+            background: aliceblue;
+            color: #2C2C41;
+        }
+        #enviar{
+            border-radius: 12em;
+            background: aliceblue;
+            color: #2C2C41;
+        }
+        #mostrarOculto:hover {
+            background-color: #2C2C41;
+            color: white;
+        }
+        #enviar:hover {
+            background-color: #CDCDCD;
+        }
+    </style>
+</head>
+<!--(id, identificador, contrasenna, codigoCookie, caducidadCodigoCookie, tipoUsuario, nombre, apellidos) -->
+<body>
+<h2>Tienda DAW</h2>
+<h3>Rellena para completar tu perfil</h3>
+<section>
+    <form action="" method="post"></form>
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" minlength="3"  maxlength="8" placeholder="Nombre" autofocus required />
+    <label for="apellidos">Apellidos</label>
+    <input type="text" id="apellidos" minlength="3"  maxlength="12" placeholder="Apellidos" autofocus required />
+    <label for="identificador">Identificador</label>
+    <input type="text" id="identificador" minlength="5"  maxlength="10" placeholder="Identificador" autofocus required />
+    <label for="contrasenna">Contraseña</label>
+    <input type="password" id="contrasenna" minlength="6"  maxlength="10" placeholder="Contraseña" autofocus required />
+    <input type="button" id="mostrarOculto" value="👁">
+    <label for="tipoUsuario">Tipo de Usuario</label>
+    <select id="tipoUsuario" name="tipoUsuario">
+        <option value="">Elige</option>
+        <option value="ENCAR">ENCAR</option>
+        <option value="CLWEB">CLWEB</option>
+        <option value="X">loTenemosQueDecidirClase</option>
+    </select>
+    <input type="submit" id="enviar"  autofocus/>
+</section>
+</body>
+</html>
