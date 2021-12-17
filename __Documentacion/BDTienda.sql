@@ -7,6 +7,7 @@ USE tienda;
 CREATE TABLE `producto` (
   `id` int(2) AUTO_INCREMENT,
   `denominacion` varchar(30) NOT NULL,
+  `tipo` varchar(30) NOT NULL,
   `precioUnidad` int(3) NOT NULL,
   `stock` int(3) NOT NULL,
   PRIMARY KEY (id)
@@ -36,15 +37,15 @@ CREATE TABLE `linea` (
 );
 
 
-INSERT INTO producto VALUES (1,'Patatas'    ,0.99 , 29),
-                            (2,'Pizza'      ,1.99 , 9),
-                            (3,'Lechuga'    ,0.49 , 8),
-                            (4,'Pimiento'   ,0.52 , 4),
-                            (5,'Fresas'     ,2.00 , 40),
-                            (6,'Napolitana' ,0.99 , 60),
-                            (7,'Chocolate'  ,1.50 , 45),
-                            (8,'Manzana'    ,0.88 , 50),
-                            (9,'Pera'       ,1.30 , 29);
+INSERT INTO producto VALUES (1,'Patatas'    ,'Otros',0.99 , 29),
+                            (2,'Pizza'      ,'Pastas',1.99 , 9),
+                            (3,'Lechuga'    ,'Verduras',0.49 , 8),
+                            (4,'Pimiento'   ,'Verduras',0.52 , 4),
+                            (5,'Fresas'     ,'Frutas',2.00 , 40),
+                            (6,'Napolitana' ,'Galletas',0.99 , 60),
+                            (7,'Chocolate'  ,'Postres',1.50 , 45),
+                            (8,'Manzana'    ,'Frutas',0.88 , 50),
+                            (9,'Pera'       ,'Frutas',1.30 , 29);
 
 INSERT INTO ticket VALUES (1, '2021/04/15 16:00:00' ,  '2021/04/15 20:30:00' , 4),
                           (2, '2021/04/15 16:01:55' ,  '2021/04/15 20:30:00' , 2),
