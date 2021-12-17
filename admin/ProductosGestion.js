@@ -5,6 +5,8 @@
 // ---------- VARIOS DE BASE/UTILIDADES ----------
 
 window.onload = inicializar;
+var productosInicio; //----
+var todosLosDatosCargados = false;
 
 function notificarUsuario(texto) {
     // TODO En lugar del alert, habría que añadir una línea en una zona de notificaciones, arriba, con un temporizador para que se borre solo en ¿5? segundos.
@@ -61,29 +63,105 @@ function inicializar() {
 
     llamadaAjax("ProductoObtenerTodos.php", "",
         function(texto) {
-            var productos = JSON.parse(texto);
+             productosInicio = JSON.parse(texto);
 
-            for (var i=0; i<productos.length; i++) {
-                domInsertar(productos[i]);
+            for (var i=0; i<productosInicio.length; i++) {
+                domInsertar(productosInicio[i]);
+                addProductoSelectFiltro("selectTipos", productosInicio[i]); //-------------------
+                addProductoSelectFiltro("selTipos", productosInicio[i]); //-----------------
             }
+            todosLosDatosCargados = true;
+            document.getElementById("selectTipos").addEventListener("click", realizarFiltro, false);
+
         },
         function(texto) {
-            alert(productos);
+            alert(productosInicio);
             notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
         }
     );
 }
+function realizarFiltro(e) {
+    eliminarTodosLosHijosDivDatos();
+    //Aqui obtengo el valor que elije el usuario para hacer el filtrado
+    var filtrarPor = e.target.value;
+    if (filtrarPor == "Todos" && !todosLosDatosCargados) {
+        //si el usuario ha filtrado por "Todos" y no estan ya cargados todos los datos entonces muestro todos los datos
+        llamadaAjax("ProductoObtenerTodos.php", "",
+            function(texto) {
+                productosInicio = JSON.parse(texto);
+
+                for (var i=0; i<productosInicio.length; i++) {
+                    domInsertar(productosInicio[i]);
+                    addProductoSelectFiltro(productosInicio[i]); //-------------------
+                }
+                todosLosDatosCargados = true;
+                document.getElementById("selectTipos").addEventListener("click", realizarFiltro, false);
+            },
+            function(texto) {
+                alert(productosInicio);
+                notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
+            }
+        );
+    } else {
+        //si el usuario a seleccionado un filtro determinado aplico la busqueda segun dicho filtro
+        llamadaAjax("ProductoObtenerFiltrados.php?filtro="+filtrarPor, "",
+            function(texto) {
+                var producto = JSON.parse(texto);
+
+                for (var i=0; i<producto.length; i++) {
+                    domInsertar(producto[i]);
+                    addProductoSelectFiltro("selectTipos",producto[i]); //-------------------
+                }
+            },
+            function(texto) {
+                alert(productosInicio);
+                notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
+            }
+        );
+    }
+}
+
+//Este metodo elimina todos los div que el metodo de obtener todos los productos crea
+function eliminarTodosLosHijosDivDatos() {
+    var divHijos = document.getElementById("divDatos").children;
+    var numDivs = divHijos.length;
+    var cont = numDivs - 1;
+    while (divHijos.length > 0) {
+        divHijos[cont].remove();
+        cont--;
+    }
+    todosLosDatosCargados = false;
+}
 
 function clickCrear() {
     inpNombre.disabled = true;
+    inpTipo.disabled = true;
     inpPrecio.disabled = true;
     inpStock.disabled = true;
 
     let producto = {
         "id" : -1,
         "denominacion" : inpNombre.value,
-        "precioUnidad" : inpPrecio.value,
+        "tipo" : inpTipo.value,
+        "precio" : inpPrecio.value,
         "stock" : inpStock.value
+    }
+    function addProductoSelectFiltro(nombreSelectHTMl, selectproductoActual) {
+        //TODO SOY CONSCIENTE de que seria mejor inicializar el select al cargar pagina
+        //para no tener que hacerlo por cada elemento de la BBDD.
+        var select = document.getElementById(nombreSelectHTMl);
+        var optionsExistentes = select.options;
+        var existe = false;
+        for (let i = 0; i < optionsExistentes.length; i++) {
+            if (optionsExistentes[i].value == productoActual.tipo) {
+                existe = true;
+            }
+        }
+        if (!existe) {
+            var opcion = new Option(productoActual.tipo, productoActual.tipo);
+            select.appendChild(opcion);
+        }
+        existe = false;
     }
 
     llamadaAjax("ProductoCrear.php", objetoAParametrosParaRequest(producto),
@@ -97,6 +175,8 @@ function clickCrear() {
 
             inpNombre.value = "";
             inpNombre.disabled = false;
+            inpTipo.value = "";
+            inpTipo.disabled = false;
             inpPrecio.value = "";
             inpPrecio.disabled = false;
             inpStock.value = "";
@@ -105,6 +185,7 @@ function clickCrear() {
         function(texto) {
             notificarUsuario("Error Ajax al crear: " + texto);
             inpNombre.disabled = false;
+            inpTipo.disabled = false;
             inpPrecio.disabled = false;
             inpStock.disabled = false;
         }
@@ -162,6 +243,18 @@ function domCrearDivInputText(textoValue, codigoOnblur) {
 
     return div;
 }
+function domCrearDivSelect(options, codigoOnblur) {
+    let div = document.createElement("div");
+    let select = document.createElement("select");
+    for (let i = 0; i < options.length; i++) {
+        var opcion = new Option(options[i], options[i]);
+        select.appendChild(opcion);
+    }
+    option.setAttribute("onblur", codigoOnblur + " return false;");
+    div.appendChild(select);
+
+    return div;
+}
 
 function domCrearDivIcon(clase, codigoOnclick) {
     let div = document.createElement("div");
@@ -177,7 +270,8 @@ function domObjetoADiv(producto) {
     let div = document.createElement("div");
             div.setAttribute("id", "producto-" + producto.id);
     div.appendChild(domCrearDivInputText(producto.denominacion, "blurModificar(this);"));
-    div.appendChild(domCrearDivInputText(producto.precioUnidad, "blurModificar(this);"));
+    div.appendChild(domCrearDivInputText(producto.tipo, "blurModificar(this);"));
+    div.appendChild(domCrearDivInputText(producto.precio, "blurModificar(this);"));
     div.appendChild(domCrearDivInputText(producto.stock, "blurModificar(this);"));
     div.appendChild(domCrearDivIcon("fa fa-trash", "clickEliminar(" + producto.id + ");"));
 

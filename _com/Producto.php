@@ -7,42 +7,57 @@ class Producto extends Dato
     use Identificable;
 
     private string $denominacion;
-    private string $precioUnidad;
+    private string $tipo;
+    private string $precio;
     private string $stock;
-    private ?Producto $producto = null;
 
-    public function __construct($id, $denominacion, $precioUnidad, $stock)
+    public function __construct($id, $denominacion, $tipo, $precio, $stock)
     {
         $this->id = $id;
-        $this->denominacion= $denominacion;
-        $this->precioUnidad= $precioUnidad;
-        $this->stock= $stock;
+        $this->denominacion = $denominacion;
+        $this->tipo = $tipo;
+        $this->precio = $precio;
+        $this->stock = $stock;
     }
 
-    public function getDenominacion(): string
+    public function getDenominacion()
     {
         return $this->denominacion;
     }
 
-    public function setDenominacion(string $denominacion): void
+    public function setDenominacion($denominacion)
     {
-        $this->denominacion= $denominacion;
+        $this->denominacion = $denominacion;
     }
 
-    public function getPrecio(){
-        return $this->precioUnidad;
+    public function getTipo()
+    {
+        return $this->tipo;
     }
 
-    public function setPrecio($precioUnidad){
-        $this->precioUnidad=$precioUnidad;
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
     }
 
-    public function getStock(){
+    public function getPrecio()
+    {
+        return $this->precio;
+    }
+
+    public function setPrecio($precio)
+    {
+        $this->precio = $precio;
+    }
+
+    public function getStock()
+    {
         return $this->stock;
     }
 
-    public function setStock($stock){
-        $this->stock=$stock;
+    public function setStock($stock)
+    {
+        $this->stock = $stock;
     }
 
     public function jsonSerialize()
@@ -50,7 +65,8 @@ class Producto extends Dato
         return [
             "id" => $this->id,
             "denominacion" => $this->denominacion,
-            "precioUnidad" => $this->precioUnidad,
+            "tipo" => $this->tipo,
+            "precio" => $this->precio,
             "stock" => $this->stock,
         ];
 

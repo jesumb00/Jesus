@@ -78,7 +78,7 @@ class DAO
 
     private static function productoCrearDesdeFila(array $fila): Producto
     {
-        return new Producto($fila["id"], $fila["denominacion"], $fila["precioUnidad"], $fila["stock"]);
+        return new Producto($fila["id"], $fila["denominacion"], $fila["tipo"], $fila["precio"], $fila["stock"]);
     }
 
     private static function productoObtenerPorId(int $id): ?Producto
@@ -108,6 +108,23 @@ class DAO
         return $datos;
     }
 
+    //ESTA FUNCION ES LA QUE HE AÑADIDO YO
+    public static function productoObtenerFiltrados($tipo): array
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM producto WHERE tipo = ?",
+            [$tipo]
+        );
+
+        $datos = [];
+        foreach ($rs as $fila) {
+            $producto = Self::productoCrearDesdeFila($fila);
+            array_push($datos, $producto);
+        }
+
+        return $datos;
+    }
+
     public static function productoEliminarPorId(int $id): bool
     {
         $filasAfectadas = Self::ejecutarUpdel(
@@ -118,11 +135,11 @@ class DAO
         return ($filasAfectadas == 1);
     }
 
-    public static function productoCrear(string $nombre, string $precioUnidad, string $stock)
+    public static function productoCrear(string $nombre, string $tipo, string $precio, string $stock)
     {
         $idAutogenerado = Self::ejecutarInsert(
-            "INSERT INTO producto  VALUES (NULL ,?, ?, ?)",
-            [$nombre, $precioUnidad, $stock]
+            "INSERT INTO producto  VALUES (NULL ,?, ?, ?, ?)",
+            [$nombre, $tipo, $precio, $stock]
         );
 
         if ($idAutogenerado == null) return null;
@@ -132,8 +149,8 @@ class DAO
     public static function productoActualizar(Producto $producto): ?Producto
     {
         $filasAfectadas = Self::ejecutarUpdel(
-            "UPDATE producto SET denominacion=?, precioUnidad=?, stock=? WHERE id=?",
-            [$producto->getDenominacion(), $producto->getPrecio(), $producto->getStock(), $producto->getId()]
+            "UPDATE producto SET denominacion=?, tipo=?, precioUnidad=?, stock=? WHERE id=?",
+            [$producto->getDenominacion(), $producto->getTipo(), $producto->getPrecio(), $producto->getStock(), $producto->getId()]
         );
 
         if ($filasAfectadas === null) return null; // Necesario triple igual porque si no considera que 0 sí es igual a null
