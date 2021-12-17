@@ -139,4 +139,23 @@ class DAO
         if ($filasAfectadas === null) return null; // Necesario triple igual porque si no considera que 0 sí es igual a null
         else return $producto;
     }
+
+    // TRAZA
+
+    private static function trazaCrear($idUsuario, $localizacion, $hecho, $posibleId, $fecha): Traza
+    {
+        return new Traza($idUsuario, $localizacion, $hecho, $posibleId, $fecha);
+    }
+
+    public static function registrarAccion(Traza $traza): bool
+    {
+        $filasAfectadas = Self::ejecutarUpdel(
+            "INSERT INTO traza VALUES (?,?,?,?,?)",
+            [$traza->getIdUsuario() , $traza->getLocalizacion() , $traza->getHecho() , $traza->getPosibleId() , $traza->getFecha()]
+        );
+
+        return ($filasAfectadas == 1);
+    }
+
+
 }
