@@ -46,7 +46,7 @@ function haySesionRAM(): bool
 
 function obtenerUsuarioPorContrasenna(string $identificador, string $contrasenna): ?array
 {
-    $conexion = $DAO->obtenerPdoConexionBD();
+    $conexion = DAO::obtenerPdoConexionBD();
     $sql = "SELECT id, identificador, nombre FROM usuario
             WHERE identificador=? AND BINARY contrasenna=?";
     $select = $conexion->prepare($sql);
