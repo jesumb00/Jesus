@@ -4,7 +4,7 @@
 
     entrarSiSesionIniciada();
 
-    $usuario = obtenerUsuarioPorContrasenna($_REQUEST["identificador"], $_REQUEST["contrasenna"]);
+    $usuario = DAO::usuarioObtenerPorContrasenna($_REQUEST["identificador"], $_REQUEST["contrasenna"]);
 
     if ($usuario) { // Equivale a if ($usuario != null)
         generarSesionRAM($usuario);
@@ -13,7 +13,7 @@
             generarRenovarSesionCookie();
         }
 
-        redireccionar("../admin/ProductosGestion.html");
+        redireccionar("../admin/ProductosGestion.php");
     } else {
         redireccionar("SesionFormulario.php?error");
     }

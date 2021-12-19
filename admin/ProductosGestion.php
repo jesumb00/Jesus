@@ -1,3 +1,10 @@
+<?php
+    require_once "../_com/__RequireOnceComunes.php";
+    require_once "../sesiones/_Sesion.php";
+
+    salirSiSesionFalla();
+?>
+
 <html>
 
 <head>
