@@ -7,4 +7,5 @@ require_once "Dato.php";
 require_once "Identificable.php";
 require_once "Producto.php";
 require_once "Ticket.php";
+require_once "Usuario.php";
 require_once "Varios.php";

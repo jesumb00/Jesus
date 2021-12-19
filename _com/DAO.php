@@ -6,7 +6,7 @@ class DAO
 {
     private static ?PDO $conexion = null;
 
-    public static function obtenerPdoConexionBD(): PDO
+    private static function obtenerPdoConexionBD(): PDO
     {
         $servidor = "localhost";
         $identificador = "root";
@@ -155,5 +155,63 @@ class DAO
 
         if ($filasAfectadas === null) return null; // Necesario triple igual porque si no considera que 0 sí es igual a null
         else return $producto;
+    }
+
+    /* USUARIO */
+
+    private static function usuarioCrearDesdeFila(array $fila): Usuario
+    {
+        return new Usuario(
+            (int)$fila["id"],
+            $fila["identificador"],
+            $fila["contrasenna"],
+            $fila["codigoCookie"],
+            $fila["caducidadCodigoCookie"],
+            $fila["tipoUsuario"],
+            $fila["nombre"],
+            $fila["apellidos"]
+        );
+    }
+
+    public static function usuarioObtenerPorContrasenna(string $identificador, string $contrasenna): ?Usuario
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM usuario
+            WHERE identificador=? AND BINARY contrasenna=?",
+            [$identificador, $contrasenna]
+        );
+
+        if ($rs)    return Self::usuarioCrearDesdeFila($rs[0]);
+        else        return null;
+    }
+
+    public static function usuarioObtenerPorCookie($id, $codigoCookie): ?Usuario
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM usuario
+                WHERE id = ? AND BINARY codigoCookie = ? AND caducidadCodigoCookie >= ?",
+            [$id, $codigoCookie, date("Y-m-d H:i:s", time())]
+        );
+
+        if ($rs)    return Self::usuarioCrearDesdeFila($rs[0]);
+        else        return null;
+    }
+
+    public static function generarRenovarSesionCookie($codigoCookie, $fechaCaducidadParaBD, $id)
+    {
+        // Anotar en la BD el codigoCookie y su caducidad.
+        Self::ejecutarConsulta(
+            "UPDATE usuario SET codigoCookie=?, caducidadCodigoCookie=? WHERE id=?",
+            [$codigoCookie, $fechaCaducidadParaBD, $id]
+        );
+    }
+
+    public static function cerrarSesion($id)
+    {
+        // Eliminar de la BD el codigoCookie y su caducidad.
+        Self::ejecutarConsulta(
+            "UPDATE usuario SET codigoCookie=NULL, caducidadCodigoCookie=NULL WHERE id=?",
+            [$id]
+        );
     }
 }

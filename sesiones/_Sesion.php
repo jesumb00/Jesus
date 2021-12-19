@@ -2,22 +2,16 @@
 
 declare(strict_types=1);
 
-require_once "../_com/__RequireOnceComunes.php";
-
-
 session_start();
-
-
 
 function entrarSiSesionIniciada()
 {
-    if (comprobarRenovarSesion()) redireccionar("../admin/ProductosGestion.html");
+    if (comprobarRenovarSesion()) redireccionar("../admin/ProductosGestion.php");
 }
 
 function salirSiSesionFalla()
 {
-    if (!comprobarRenovarSesion()) redireccionar("SesionFormulario.php");
-
+    if (!comprobarRenovarSesion()) redireccionar("../sesiones/SesionFormulario.php");
 }
 
 function comprobarRenovarSesion(): bool
@@ -44,51 +38,24 @@ function haySesionRAM(): bool
     return isset($_SESSION["id"]);
 }
 
-function obtenerUsuarioPorContrasenna(string $identificador, string $contrasenna): ?array
-{
-    $conexion = DAO::obtenerPdoConexionBD();
-    $sql = "SELECT id, identificador, nombre FROM usuario
-            WHERE identificador=? AND BINARY contrasenna=?";
-    $select = $conexion->prepare($sql);
-    $select->execute([$identificador, $contrasenna]);
-    $filasObtenidas = $select->rowCount();
-
-    if ($filasObtenidas == 0) return null;
-    else return $select->fetch();
-}
-
-// Antiguo haySesionCookie(): bool
-function obtenerUsuarioPorCookie(): ?array
+function obtenerUsuarioPorCookie(): ?Usuario
 {
     if (isset($_COOKIE["id"])) {
-        $conexion = DAO::obtenerPdoConexionBD();
-
-        $sql = "SELECT id, identificador, nombre FROM usuario
-                WHERE id = ? AND BINARY codigoCookie = ? AND caducidadCodigoCookie >= ?";
-        $select = $conexion->prepare($sql);
-        $select->execute([
-            $_COOKIE["id"],
-            $_COOKIE["codigoCookie"],
-            date("Y-m-d H:i:s", time()) // Fecha-hora de ahora mismo obtenida del sistema.
-        ]);
-        $filasObtenidas = $select->rowCount();
-
-        if ($filasObtenidas == 0) return null;
-        else return $select->fetch();
+        return DAO::usuarioObtenerPorCookie($_COOKIE["id"], $_COOKIE["codigoCookie"]);
     } else {
         return null;
     }
 }
 
-function generarSesionRAM(array $usuario)
+function generarSesionRAM(Usuario $usuario)
 {
     // Guardar el id es lo único indispensable.
     // El resto son por evitar accesos a la BD a cambio del riesgo
     // de que mis datos en sesión RAM estén obsoletos.
-    $_SESSION["id"] = $usuario["id"];
-    $_SESSION["identificador"] = $usuario["identificador"];
-    $_SESSION["nombre"] = $usuario["nombre"];
-    $_SESSION["tipoUsuario"] = $usuario["usuario"];
+    $_SESSION["id"] = $usuario->getId();
+    $_SESSION["identificador"] = $usuario->getIdentificador();
+    $_SESSION["nombre"] = $usuario->getIdentificador();
+    $_SESSION["tipoUsuario"] = $usuario->getTipoUsuario();
 }
 
 function generarRenovarSesionCookie()
@@ -99,10 +66,7 @@ function generarRenovarSesionCookie()
     $fechaCaducidadParaBD = date("Y-m-d H:i:s", $fechaCaducidad);
 
     // Anotar en la BD el codigoCookie y su caducidad.
-    $conexion = DAO::obtenerPdoConexionBD();
-    $sql = "UPDATE usuario SET codigoCookie=?, caducidadCodigoCookie=? WHERE id=?";
-    $select = $conexion->prepare($sql);
-    $select->execute([$codigoCookie, $fechaCaducidadParaBD, $_SESSION["id"]]);
+    DAO::generarRenovarSesionCookie($codigoCookie, $fechaCaducidadParaBD, $_SESSION["id"]);
 
     // Crear (o renovar) las cookies.
     setcookie('id', strval($_SESSION["id"]), $fechaCaducidad);
@@ -111,11 +75,7 @@ function generarRenovarSesionCookie()
 
 function cerrarSesion()
 {
-    // Eliminar de la BD el codigoCookie y su caducidad.
-    $conexion = DAO::obtenerPdoConexionBD();
-    $sql = "UPDATE usuario SET codigoCookie=NULL, caducidadCodigoCookie=NULL WHERE id=?";
-    $select = $conexion->prepare($sql);
-    $select->execute([$_SESSION["id"]]); // Se añade el parámetro a la consulta preparada.
+    DAO::cerrarSesion($_SESSION["id"]);
 
     // Borrar las cookies.
     setcookie('id', "", time() - 3600);
