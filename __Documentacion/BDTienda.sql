@@ -13,6 +13,21 @@ CREATE TABLE `producto` (
   PRIMARY KEY (id)
 ) ;
 
+DROP TABLE IF EXISTS usuario;
+CREATE TABLE IF NOT EXISTS `usuario` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `identificador` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
+    `contrasenna` varchar(80) COLLATE utf8_spanish_ci NOT NULL,
+    `codigoCookie` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+    `caducidadCodigoCookie` timestamp NULL DEFAULT NULL,
+    `tipoUsuario` varchar(10) NOT NULL,
+    `nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+    `apellidos` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+    PRIMARY KEY (id)
+    )
+    ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+TRUNCATE TABLE usuario;
+
 CREATE TABLE `ticket` (
   `id` int(3)  AUTO_INCREMENT ,
   `apertura` DATETIME  NOT NULL,
@@ -69,6 +84,11 @@ INSERT INTO linea VALUES (1, 2 , 55 , 4.99),
                           (5, 7 , 23 , 7.89),
                           (6, 6 , 12 , 5.99),
                           (7, 2 , 11 , 1.50);
+
+INSERT INTO usuario (id, identificador, contrasenna, codigoCookie, caducidadCodigoCookie, tipoUsuario, nombre, apellidos)
+VALUES                    (1, 'jlopez' ,  'j', NULL, NULL, 'ENCAR', 'José'  , 'López'),
+                          (2, 'mgarcia',  'm', NULL, NULL, 'CLWEB', 'María' , 'García'),
+                          (3, 'fpi'    ,  'f', NULL, NULL, 'ENCAR', 'Felipe', 'Pi');
  
 
 
