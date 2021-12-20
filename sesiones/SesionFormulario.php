@@ -5,8 +5,6 @@
     entrarSiSesionIniciada();
 ?>
 
-
-
 <html>
 
 <head>

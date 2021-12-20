@@ -49,40 +49,16 @@ function debug() {
 
 function inicializar() {
     btnRegistroUsuario.onclick = clickRegistrar();
-
-    llamadaAjax("ProductoObtenerTodos.php", "",
-        function (texto) {
-            var productos = JSON.parse(texto);
-
-            for (var i = 0; i < productos.length; i++) {
-                domInsertar(productos[i]);
-            }
-        },
-        function (texto) {
-            alert(productos);
-            notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
-        }
-    );
 }
 
 function clickRegistrar() {
-/*    inpNombreUsuario.disabled = true;
-    inpApellidosUsuario.disabled = true;
-    inpIdentificadorUsuario.disabled = true;
-    inpContrasennaUsuario.disabled = true;*/
-
     llamadaAjax("UsuarioCrear.php", "nombre=" + inpNombreUsuario.value + "apellidos=" + inpApellidosUsuario.value
         + "identificador=" + inpIdentificadorUsuario.value + "contrasenna=" + inpContrasennaUsuario.value,
         function (texto) {
-            // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
-            //var usuario = JSON.parse(texto);
-
-            //inpNombre.value = "";
-            //inpNombre.disabled = false;
+            alert("Tu cuenta ha sido creada. Ya puedes inicar sesión");
         },
         function (texto) {
             notificarUsuario("Error Ajax al crear usuario: " + texto);
-            //inpNombre.disabled = false;
         }
     );
 }
