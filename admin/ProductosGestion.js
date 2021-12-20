@@ -55,6 +55,7 @@ function debug() {
 
 function inicializar() {
     btnCrear.onclick = clickCrear;
+    btnCerrarSesion.onclick= clickCerrarSesion;
 
     // En los "Insertar" de a continuación no se fuerza la ordenación, ya que PHP
     // nos habrá dado los elementos en orden correcto y sería una pérdida de tiempo.
@@ -94,6 +95,22 @@ function clickCrear() {
         }
     );
 }
+
+
+function clickCerrarSesion() {
+
+    llamadaAjax("SesionCerrar.php", "",
+        function() {
+
+        },
+        function() {
+            notificarUsuario("Error Ajax al cerrar sesión: "
+            );
+        }
+    );
+}
+
+
 
 function blurModificar(input) {
     let div = input.parentElement.parentElement;

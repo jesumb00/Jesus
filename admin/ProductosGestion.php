@@ -35,6 +35,8 @@
 <input type='text' id='inpNombre' placeholder='Categoria' value='' />
 <button id='btnCrear'>Crear</button>
 
+<button id="btnCerrarSesion"> Cerrar sesión </button>
+
 </body>
 
 </html>
