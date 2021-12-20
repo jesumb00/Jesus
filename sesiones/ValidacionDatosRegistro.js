@@ -1,4 +1,5 @@
-//TODO Validar los campos, que sean correctos para que no hayan errores en la BBDD
+// Validación de los datos introducidos por el usuario para registrarle
+// ¡¡ Estos datos van a la BDD !!
 
 const form = document.getElementById("form");
 const nombre = document.getElementById("inpNombreUsuario");

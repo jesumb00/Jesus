@@ -12,7 +12,7 @@ function notificarUsuario(texto) {
 
 // TODO El parametro "parametros" podía ser directamente un objeto JS y lo convertimos dentro de esta función, en lugar de que lo convierta desde fuera el llamante.
 function llamadaAjax(url, parametros, manejadorOK, manejadorError) {
-    //TODO PARA DEPURACIÓN: alert("Haciendo ajax a " + url + "\nCon parámetros " + parametros);
+    // TODO PARA DEPURACIÓN: alert("Haciendo ajax a " + url + "\nCon parámetros " + parametros);
 
     var request = new XMLHttpRequest();
 
@@ -53,7 +53,8 @@ function debug() {
 
 function inicializar() {
     btnCrear.onclick = clickCrear;
-    $('#btnCerrarSesion').on('click', clickCerrarSesion)
+    btnCerrarSesion.onclick = clickCerrarSesion;
+    //$('#btnCerrarSesion').on('click', clickCerrarSesion)
 
     // En los "Insertar" de a continuación no se fuerza la ordenación, ya que PHP
     // nos habrá dado los elementos en orden correcto y sería una pérdida de tiempo.
@@ -71,6 +72,21 @@ function inicializar() {
             notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
         }
     );
+}
+
+function clickCerrarSesion() {
+    $.ajax({
+        type: 'POST',
+        url: '../sesiones/SesionCerrar.php',
+        data: {'clickCerrar': true},
+    })
+        .done(function (resultado) {
+            // $('#result').html(resultado)
+            window.location.href = "../sesiones/SesionFormulario.php";
+        })
+        .fail(function () {
+            alert('Hubo un error al cerrar sesión');
+        })
 }
 
 function clickCrear() {
@@ -229,19 +245,4 @@ function domModificar(producto) {
 
     // Se fuerza la ordenación, ya que este elemento podría no quedar ordenado si se pone al final.
     domInsertar(producto, true);
-}
-
-function clickCerrarSesion() {
-    $.ajax({
-        type: 'POST',
-        url: '../sesiones/SesionCerrar.php',
-        data: {'clickCerrar': true},
-    })
-        .done(function (resultado) {
-            // $('#result').html(resultado)
-            window.location.href = "../sesiones/SesionFormulario.php";
-        })
-        .fail(function () {
-            alert('Hubo un error al cerrar sesión');
-        })
 }
