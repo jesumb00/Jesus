@@ -4,15 +4,6 @@ declare(strict_types=1);
 
 session_start();
 
-function entrarSiRegistroCompleto() {
-
-}
-
-function registroCorrecto(): bool{
-    $registroCorrecto = false;
-}
-
-
 function entrarSiSesionIniciada()
 {
     if (comprobarRenovarSesion()) redireccionar("../admin/ProductosGestion.php");

@@ -1,3 +1,5 @@
+//TODO Validar los campos, que sean correctos para que no hayan errores en la BBDD
+
 const form = document.getElementById("form");
 const nombre = document.getElementById("inpNombreUsuario");
 const apellidos = document.getElementById("inpApellidosUsuario");

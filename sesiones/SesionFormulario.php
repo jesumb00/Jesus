@@ -9,7 +9,6 @@
 
 <head>
     <meta charset='UTF-8'>
-    <script src="UsuariosGestion.js" ></script>
 </head>
 <body>
 
