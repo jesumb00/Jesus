@@ -134,6 +134,17 @@ class DAO
         );
     }
 
+    public static function usuarioCrear(string $nombre, string $apellidos, string $identificador, string $contrasenna)
+    {
+        $idAutogenerado = Self::ejecutarInsert(
+            "INSERT INTO usuario  VALUES (NULL ,?, ?, NULL, NULL, ?, ?, ?)",
+            [$identificador, $contrasenna, "CLWEB", $nombre, $apellidos]
+        );
+
+        if ($idAutogenerado == null) return null;
+        else return 1;
+    }
+
     public static function usuarioObtenerPorContrasenna(string $identificador, string $contrasenna): ?Usuario
     {
         $rs = Self::ejecutarConsulta(

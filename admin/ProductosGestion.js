@@ -53,7 +53,6 @@ function debug() {
 
 function inicializar() {
     btnCrear.onclick = clickCrear;
-    //btnCerrarSesion.onclick = clickCerrarSesion;
     $('#btnCerrarSesion').on('click', clickCerrarSesion)
 
     // En los "Insertar" de a continuación no se fuerza la ordenación, ya que PHP
@@ -93,21 +92,6 @@ function clickCrear() {
             inpNombre.disabled = false;
         }
     );
-}
-
-function clickCerrarSesion() {
-    $.ajax({
-        type: 'POST',
-        url: '../sesiones/SesionCerrar.php',
-        data: {'clickCerrar': true},
-    })
-        .done(function (resultado) {
-            // $('#result').html(resultado)
-            window.location.href = "../sesiones/SesionFormulario.php";
-        })
-        .fail(function () {
-            alert('Hubo un error al cerrar sesión');
-        })
 }
 
 
@@ -245,4 +229,19 @@ function domModificar(producto) {
 
     // Se fuerza la ordenación, ya que este elemento podría no quedar ordenado si se pone al final.
     domInsertar(producto, true);
+}
+
+function clickCerrarSesion() {
+    $.ajax({
+        type: 'POST',
+        url: '../sesiones/SesionCerrar.php',
+        data: {'clickCerrar': true},
+    })
+        .done(function (resultado) {
+            // $('#result').html(resultado)
+            window.location.href = "../sesiones/SesionFormulario.php";
+        })
+        .fail(function () {
+            alert('Hubo un error al cerrar sesión');
+        })
 }

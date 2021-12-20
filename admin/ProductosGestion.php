@@ -29,16 +29,11 @@
     </div>
     <div id='divDatos'>
     </div>
+
+    <input type='text' id='inpNombre' placeholder='Categoria' value='' />
+    <button id='btnCrear'>Crear</button>
+    <button id="btnCerrarSesion"> Cerrar sesión </button>
 </section>
-
-<br>
-
-<input type='text' id='inpNombre' placeholder='Categoria' value='' />
-<button id='btnCrear'>Crear</button>
-
-<br><br><br>
-
-<button id="btnCerrarSesion"> Cerrar sesión </button>
 
 </body>
 

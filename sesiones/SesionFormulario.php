@@ -11,6 +11,7 @@
 
 <head>
     <meta charset='UTF-8'>
+    <script src="UsuariosGestion.js" ></script>
 </head>
 <body>
 
@@ -32,6 +33,26 @@
     <input type='checkbox' name='recuerdame'>Recuérdame<br><br>
 
     <input type='submit' value='Iniciar sesión'>
+</form>
+
+
+<form action="UsuarioCrear.php" id="form" method="post">
+    <label for="nombre">Nombre</label> <br>
+    <input type="text" name="inpNombreUsuario"> <br> <br>
+
+    <label for="apellidos">Apellidos</label> <br>
+    <input type="text" name="inpApellidosUsuario"> <br> <br>
+
+    <label for="identificador">Identificador</label> <br>
+    <input type="text" name="inpIdentificadorUsuario"> <br> <br>
+
+    <label for="contrasenna">Contraseña</label> <br>
+    <input type="text" name="inpContrasennaUsuario"> <br> <br>
+
+    <label for="contrasenna2">Confirme su contraseña</label> <br>
+    <input type="text" name="inpContrasenna2Usuario"> <br> <br>
+
+    <input type="submit" name="btnRegistroUsuario">
 </form>
 
 </body>
