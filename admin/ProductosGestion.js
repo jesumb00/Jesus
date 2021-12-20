@@ -1,7 +1,6 @@
 // TODO Quedaría pendiente poner un timer para actualizar lo local si actualizan el servidor. Una solución óptima sería poner timestamp de modificación en la tabla y pedir elementoqueseaObtenerModificadosDesde(timestamp), donde timestamp es la última vez que he pedido algo.
 
 
-
 // ---------- VARIOS DE BASE/UTILIDADES ----------
 
 window.onload = inicializar;
@@ -20,7 +19,7 @@ function llamadaAjax(url, parametros, manejadorOK, manejadorError) {
     request.open("POST", url);
     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-    request.onreadystatechange = function() {
+    request.onreadystatechange = function () {
         if (this.readyState == 4) { // 4 equivale a "hemos terminado".
             if (request.status == 200) { // 200 significa "todo bien".
                 manejadorOK(request.responseText);
@@ -47,7 +46,6 @@ function debug() {
 }
 
 
-
 // ---------- MANEJADORES DE EVENTOS / COMUNICACIÓN CON PHP ----------
 
 // TODO Estaría genial que estos métodos no metieran la mano para nada en el DOM, sino que lo hicieran todo a través de métodos domTalCosa:
@@ -55,20 +53,21 @@ function debug() {
 
 function inicializar() {
     btnCrear.onclick = clickCrear;
-    btnCerrarSesion.onclick= clickCerrarSesion;
+    //btnCerrarSesion.onclick = clickCerrarSesion;
+    $('#btnCerrarSesion').on('click', clickCerrarSesion)
 
     // En los "Insertar" de a continuación no se fuerza la ordenación, ya que PHP
     // nos habrá dado los elementos en orden correcto y sería una pérdida de tiempo.
 
     llamadaAjax("ProductoObtenerTodos.php", "",
-        function(texto) {
+        function (texto) {
             var productos = JSON.parse(texto);
 
-            for (var i=0; i<productos.length; i++) {
+            for (var i = 0; i < productos.length; i++) {
                 domInsertar(productos[i]);
             }
         },
-        function(texto) {
+        function (texto) {
             alert(productos);
             notificarUsuario("Error Ajax al cargar al inicializar: " + texto);
         }
@@ -79,7 +78,7 @@ function clickCrear() {
     inpNombre.disabled = true;
 
     llamadaAjax("ProductoCrear.php", "nombre=" + inpNombre.value,
-        function(texto) {
+        function (texto) {
             // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
             var producto = JSON.parse(texto);
 
@@ -89,27 +88,27 @@ function clickCrear() {
             inpNombre.value = "";
             inpNombre.disabled = false;
         },
-        function(texto) {
+        function (texto) {
             notificarUsuario("Error Ajax al crear: " + texto);
             inpNombre.disabled = false;
         }
     );
 }
 
-
 function clickCerrarSesion() {
-
-    llamadaAjax("SesionCerrar.php", "",
-        function() {
-
-        },
-        function() {
-            notificarUsuario("Error Ajax al cerrar sesión: "
-            );
-        }
-    );
+    $.ajax({
+        type: 'POST',
+        url: '../sesiones/SesionCerrar.php',
+        data: {'clickCerrar': true},
+    })
+        .done(function (resultado) {
+            // $('#result').html(resultado)
+            window.location.href = "../sesiones/SesionFormulario.php";
+        })
+        .fail(function () {
+            alert('Hubo un error al cerrar sesión');
+        })
 }
-
 
 
 function blurModificar(input) {
@@ -117,7 +116,7 @@ function blurModificar(input) {
     let producto = domDivAObjeto(div);
 
     llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
-        function(texto) {
+        function (texto) {
             if (texto != "null") {
                 // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
                 producto = JSON.parse(texto);
@@ -126,15 +125,15 @@ function blurModificar(input) {
                 notificarUsuario("Error Ajax al modificar: " + texto);
             }
         },
-        function(texto) {
+        function (texto) {
             notificarUsuario("Error Ajax al modificar: " + texto);
         }
     );
 }
 
 function clickEliminar(id) {
-    llamadaAjax("ProductoEliminar.php", "id="+id,
-        function(texto) {
+    llamadaAjax("ProductoEliminar.php", "id=" + id,
+        function (texto) {
             var operacionOK = JSON.parse(texto);
             if (operacionOK) {
                 domEliminar(id);
@@ -142,22 +141,21 @@ function clickEliminar(id) {
                 notificarUsuario("Error Ajax al eliminar: " + texto);
             }
         },
-        function(texto) {
+        function (texto) {
             notificarUsuario("Error Ajax al eliminar: " + texto);
         }
     );
 }
 
 
-
 // ---------- GESTIÓN DEL DOM ----------
 
 function domCrearDivInputText(textoValue, codigoOnblur) {
     let div = document.createElement("div");
-        let input = document.createElement("input");
-                input.setAttribute("type", "text");
-                input.setAttribute("value", textoValue);
-                input.setAttribute("onblur", codigoOnblur + " return false;");
+    let input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("value", textoValue);
+    input.setAttribute("onblur", codigoOnblur + " return false;");
     div.appendChild(input);
 
     return div;
@@ -165,9 +163,9 @@ function domCrearDivInputText(textoValue, codigoOnblur) {
 
 function domCrearDivIcon(clase, codigoOnclick) {
     let div = document.createElement("div");
-        let i = document.createElement("i");
-                i.setAttribute("class", clase);
-                i.setAttribute("onclick", codigoOnclick + " return false;");
+    let i = document.createElement("i");
+    i.setAttribute("class", clase);
+    i.setAttribute("onclick", codigoOnclick + " return false;");
     div.appendChild(i);
 
     return div;
@@ -175,7 +173,7 @@ function domCrearDivIcon(clase, codigoOnclick) {
 
 function domObjetoADiv(producto) {
     let div = document.createElement("div");
-            div.setAttribute("id", "producto-" + producto.id);
+    div.setAttribute("id", "producto-" + producto.id);
     div.appendChild(domCrearDivInputText(producto.denominacion, "blurModificar(this);"));
     div.appendChild(domCrearDivIcon("fa fa-trash", "clickEliminar(" + producto.id + ");"));
 
@@ -205,10 +203,10 @@ function domEjecutarInsercion(pos, producto) {
     divDatos.insertBefore(divNuevo, divReferencia);
 }
 
-function domInsertar(productoNueva, enOrden=false) {
+function domInsertar(productoNueva, enOrden = false) {
     // Si piden insertar en orden, se buscará su lugar. Si no, irá al final.
     if (enOrden) {
-        for (let pos=0; pos < divDatos.children.length; pos++) {
+        for (let pos = 0; pos < divDatos.children.length; pos++) {
             let productoActual = domObtenerObjeto(pos);
 
             if (productoNueva.nombre.localeCompare(productoActual.nombre) == -1) {
@@ -226,7 +224,7 @@ function domInsertar(productoNueva, enOrden=false) {
 function domLocalizarPosicion(idBuscado) {
     var divs = divDatos.children;
 
-    for (var pos=0; pos < divs.length; pos++) {
+    for (var pos = 0; pos < divs.length; pos++) {
         let div = divs[pos];
         let productoActualId = extraerId(div.id);
 

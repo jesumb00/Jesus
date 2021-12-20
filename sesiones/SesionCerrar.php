@@ -5,6 +5,8 @@
 
     salirSiSesionFalla();
 
-    cerrarSesion();
-
-    redireccionar("SesionFormulario.php?sesionCerrada");
+    if(isset($_REQUEST["clickCerrar"]) && $_REQUEST["clickCerrar"]) {
+        cerrarSesion();
+    } else {
+        echo "<script>window.history.back();</script>";
+    }
