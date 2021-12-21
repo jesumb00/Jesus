@@ -1,7 +1,6 @@
 <?php
 
-require_once "Clases.php";
-require_once "Varios.php";
+require_once "__RequireOnceComunes.php";
 
 class DAO
 {
@@ -136,7 +135,7 @@ class DAO
         return ($filasAfectadas == 1);
     }
 
-    public static function productoCrear(string $nombre, string $tipo, string $precio, string $stock)
+    public static function productoCrear(string $nombre, string $tipo, string $precio, string $stock): ?Producto
     {
         $idAutogenerado = Self::ejecutarInsert(
             "INSERT INTO producto  VALUES (NULL ,?, ?, ?, ?)",
@@ -144,7 +143,7 @@ class DAO
         );
 
         if ($idAutogenerado == null) return null;
-        else return Self::productoObtenerPorId($idAutogenerado);
+        else return Self::productoObtenerPorId($idAutogenerado); // TODO hacer un new y ya, y así no molestamos a la BD.
     }
 
     public static function productoActualizar(Producto $producto): ?Producto
@@ -198,6 +197,59 @@ class DAO
         else        return null;
     }
 
+
+
+    /* USUARIO */
+
+    private static function usuarioCrearDesdeFila(array $fila): Usuario
+    {
+        return new Usuario(
+            (int)$fila["id"],
+            $fila["identificador"],
+            $fila["contrasenna"],
+            $fila["codigoCookie"],
+            $fila["caducidadCodigoCookie"],
+            $fila["tipoUsuario"],
+            $fila["nombre"],
+            $fila["apellidos"]
+        );
+    }
+
+    public static function usuarioCrear(string $nombre, string $apellidos, string $identificador, string $contrasenna)
+    {
+        $idAutogenerado = Self::ejecutarInsert(
+            "INSERT INTO usuario  VALUES (NULL ,?, ?, NULL, NULL, ?, ?, ?)",
+            [$identificador, $contrasenna, "CLWEB", $nombre, $apellidos]
+        );
+
+        if ($idAutogenerado == null) return null;
+        else return 1;
+    }
+
+    public static function usuarioObtenerPorContrasenna(string $identificador, string $contrasenna): ?Usuario
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM usuario
+            WHERE identificador=? AND BINARY contrasenna=?",
+            [$identificador, $contrasenna]
+        );
+
+        if ($rs)    return Self::usuarioCrearDesdeFila($rs[0]);
+        else        return null;
+    }
+
+    public static function usuarioObtenerPorCookie($id, $codigoCookie): ?Usuario
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM usuario
+                WHERE id = ? AND BINARY codigoCookie = ? AND caducidadCodigoCookie >= ?",
+            [$id, $codigoCookie, date("Y-m-d H:i:s", time())]
+        );
+
+        if ($rs)    return Self::usuarioCrearDesdeFila($rs[0]);
+        else        return null;
+    }
+
     public static function generarRenovarSesionCookie($codigoCookie, $fechaCaducidadParaBD, $id)
     {
         // Anotar en la BD el codigoCookie y su caducidad.
@@ -207,7 +259,7 @@ class DAO
         );
     }
 
-    public static function cerrarSesion($id)
+    public static function cerrarSesion($id) // TODO Poner nombre más adecuado: marcarSesionComoCerrada o algo así.
     {
         // Eliminar de la BD el codigoCookie y su caducidad.
         Self::ejecutarConsulta(
@@ -215,5 +267,4 @@ class DAO
             [$id]
         );
     }
-
 }

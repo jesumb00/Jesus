@@ -10,3 +10,4 @@ require_once "Identificable.php";
 require_once "Producto.php";
 require_once "Ticket.php";
 require_once "Linea.php";
+require_once "Usuario.php";

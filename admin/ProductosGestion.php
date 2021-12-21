@@ -1,3 +1,10 @@
+<?php
+    require_once "../_com/__RequireOnceComunes.php";
+    require_once "../sesiones/_Sesion.php";
+
+    salirSiSesionFalla();
+?>
+
 <html>
 
 <head>
@@ -6,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../_com/Estilos.css">
     <script src='ProductosGestion.js'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -47,6 +55,7 @@
         <!--HAY QUE CARGAR LOS DATOS DESDE JS REUTILIZAR EL CODIGO DEL FILTRADO-->
     </select>
     <button id='btnCrear'>Crear</button>
+    <button id="btnCerrarSesion"> Cerrar sesión </button>
 
 </body>
 

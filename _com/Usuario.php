@@ -4,9 +4,9 @@ require_once "__RequireOnceComunes.php";
 
 class Usuario extends Dato
 {
-    //use Identificable;
+    use Identificable;
 
-    private int $id;
+    //private int $id;
     private string $identificador;
     private string $contrasenna;
     private ?string $codigoCookie;

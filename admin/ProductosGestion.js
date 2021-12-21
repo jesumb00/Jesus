@@ -15,14 +15,14 @@ function notificarUsuario(texto) {
 
 // TODO El parametro "parametros" podía ser directamente un objeto JS y lo convertimos dentro de esta función, en lugar de que lo convierta desde fuera el llamante.
 function llamadaAjax(url, parametros, manejadorOK, manejadorError) {
-    //TODO PARA DEPURACIÓN: alert("Haciendo ajax a " + url + "\nCon parámetros " + parametros);
+    // TODO PARA DEPURACIÓN: alert("Haciendo ajax a " + url + "\nCon parámetros " + parametros);
 
     var request = new XMLHttpRequest();
 
     request.open("POST", url);
     request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-    request.onreadystatechange = function() {
+    request.onreadystatechange = function () {
         if (this.readyState == 4) { // 4 equivale a "hemos terminado".
             if (request.status == 200) { // 200 significa "todo bien".
                 manejadorOK(request.responseText);
@@ -55,9 +55,10 @@ function debug() {
 // TODO Estaría genial que estos métodos no metieran la mano para nada en el DOM, sino que lo hicieran todo a través de métodos domTalCosa:
 // Por ejemplo: disablearCamposPersonaCrear(), enablearCamposPersonaCrear(), obtenerObjetoPersonaDeCamposPersonaCrear()...
 
-
 function inicializar() {
     btnCrear.onclick = clickCrear;
+    btnCerrarSesion.onclick = clickCerrarSesion;
+    //$('#btnCerrarSesion').on('click', clickCerrarSesion)
 
     // En los "Insertar" de a continuación no se fuerza la ordenación, ya que PHP
     // nos habrá dado los elementos en orden correcto y sería una pérdida de tiempo.
@@ -133,6 +134,21 @@ function eliminarTodosLosHijosDivDatos() {
     todosLosDatosCargados = false;
 }
 
+function clickCerrarSesion() {
+    $.ajax({
+        type: 'POST',
+        url: '../sesiones/SesionCerrar.php',
+        data: {'clickCerrar': true},
+    })
+        .done(function (resultado) {
+            // $('#result').html(resultado)
+            window.location.href = "../sesiones/SesionFormulario.php";
+        })
+        .fail(function () {
+            alert('Hubo un error al cerrar sesión');
+        })
+}
+
 function clickCrear() {
     inpNombre.disabled = true;
     selTipos.disabled = true;
@@ -166,7 +182,7 @@ function clickCrear() {
             inpStock.value = "";
             inpStock.disabled = false;
         },
-        function(texto) {
+        function (texto) {
             notificarUsuario("Error Ajax al crear: " + texto);
             inpNombre.disabled = false;
             selTipos.disabled = false;
@@ -198,7 +214,7 @@ function blurModificar(input) {
     let producto = domDivAObjeto(div);
 
     llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
-        function(texto) {
+        function (texto) {
             if (texto != "null") {
                 // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
                 producto = JSON.parse(texto);
@@ -207,15 +223,15 @@ function blurModificar(input) {
                 notificarUsuario("Error Ajax al modificar: " + texto);
             }
         },
-        function(texto) {
+        function (texto) {
             notificarUsuario("Error Ajax al modificar: " + texto);
         }
     );
 }
 
 function clickEliminar(id) {
-    llamadaAjax("ProductoEliminar.php", "id="+id,
-        function(texto) {
+    llamadaAjax("ProductoEliminar.php", "id=" + id,
+        function (texto) {
             var operacionOK = JSON.parse(texto);
             if (operacionOK) {
                 domEliminar(id);
@@ -223,7 +239,7 @@ function clickEliminar(id) {
                 notificarUsuario("Error Ajax al eliminar: " + texto);
             }
         },
-        function(texto) {
+        function (texto) {
             notificarUsuario("Error Ajax al eliminar: " + texto);
         }
     );
@@ -345,7 +361,7 @@ function domEliminar(id) {
 
 function domModificar(producto) {
     domEliminar(producto.id);
-debugger
+
     // Se fuerza la ordenación, ya que este elemento podría no quedar ordenado si se pone al final.
     domInsertar(producto, true);
 }

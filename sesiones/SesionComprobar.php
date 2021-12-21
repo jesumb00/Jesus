@@ -13,7 +13,7 @@
             generarRenovarSesionCookie();
         }
 
-        redireccionar("../admin/ProductosGestion.html");
+        redireccionar("../admin/ProductosGestion.php");
     } else {
         redireccionar("SesionFormulario.php?error");
     }
