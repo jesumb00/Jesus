@@ -8,6 +8,7 @@
 -- Versión de PHP: 8.0.13
 
 CREATE DATABASE tienda;
+START TRANSACTION;
 USE tienda;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -92,8 +93,11 @@ INSERT INTO `producto` (`id`, `denominacion`, `tipo`, `precioUnidad`, `stock`) V
 (6, 'Napolitana', 'Galletas', 1, 60),
 (7, 'Chocolate', 'Postres', 2, 45),
 (8, 'Manzana', 'Frutas', 1, 50),
-(9, 'Pera', 'Frutas', 1, 29);
-
+(9, 'Pera', 'Frutas', 1, 29),
+(10, 'Platano', 'Frutas', 1, 69),
+(11, 'Berenjena', 'Frutas', 2, 29),
+(12, 'Zapote negro', 'Frutas', 3, 55),
+(13, 'Sapo', 'Otros', 3, 33);
 -- --------------------------------------------------------
 
 --
@@ -213,6 +217,7 @@ ALTER TABLE `ticket`
 ALTER TABLE `linea`
   ADD CONSTRAINT `linea_ibfk_1` FOREIGN KEY (`ticketId`) REFERENCES `ticket` (`id`),
   ADD CONSTRAINT `linea_ibfk_2` FOREIGN KEY (`productoId`) REFERENCES `producto` (`id`);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
