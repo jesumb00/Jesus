@@ -6,7 +6,7 @@ class DAO
 {
     private static ?PDO $conexion = null;
 
-    public static function obtenerPdoConexionBD(): PDO
+    private static function obtenerPdoConexionBD(): PDO
     {
         $servidor = "localhost";
         $identificador = "root";
@@ -109,23 +109,21 @@ class DAO
     }
 
     //ESTA FUNCION ES LA QUE HE AÑADIDO YO
- public static function productoObteneFiltrados($tipo): array
-{
-    $rs = Self::ejecutarConsulta(
-        "SELECT * FROM producto WHERE tipo = ?",
-        [$tipo]
-    );
+    public static function productoObtenerFiltrados($tipo): array
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM producto WHERE tipo = ?",
+            [$tipo]
+        );
 
-    $datos = [];
-    foreach ($rs as $fila) {
-        $producto = Self::productoCrearDesdeFila($fila);
-        array_push($datos, $producto);
+        $datos = [];
+        foreach ($rs as $fila) {
+            $producto = Self::productoCrearDesdeFila($fila);
+            array_push($datos, $producto);
+        }
+
+        return $datos;
     }
-
-    return $datos;
-}
-
-
 
     public static function productoEliminarPorId(int $id): bool
     {
@@ -137,11 +135,11 @@ class DAO
         return ($filasAfectadas == 1);
     }
 
-    public static function productoCrear(string $nombre, string $precioUnidad, string $stock)
+    public static function productoCrear(string $nombre, string $tipo, string $precio, string $stock)
     {
         $idAutogenerado = Self::ejecutarInsert(
-            "INSERT INTO producto  VALUES (NULL ,?, ?, ?)",
-            [$nombre, $precioUnidad, $stock]
+            "INSERT INTO producto  VALUES (NULL ,?, ?, ?, ?)",
+            [$nombre, $tipo, $precio, $stock]
         );
 
         if ($idAutogenerado == null) return null;
@@ -151,30 +149,69 @@ class DAO
     public static function productoActualizar(Producto $producto): ?Producto
     {
         $filasAfectadas = Self::ejecutarUpdel(
-            "UPDATE producto SET denominacion=?, precioUnidad=?, stock=? WHERE id=?",
-            [$producto->getDenominacion(), $producto->getPrecio(), $producto->getStock(), $producto->getId()]
+            "UPDATE producto SET denominacion=?, tipo=?, precioUnidad=?, stock=? WHERE id=?",
+            [$producto->getDenominacion(), $producto->getTipo(), $producto->getPrecio(), $producto->getStock(), $producto->getId()]
         );
 
         if ($filasAfectadas === null) return null; // Necesario triple igual porque si no considera que 0 sí es igual a null
         else return $producto;
     }
 
-    // TRAZA
+    /* USUARIO */
 
-    private static function trazaCrear($idUsuario, $localizacion, $hecho, $posibleId, $fecha): Traza
+    private static function usuarioCrearDesdeFila(array $fila): Usuario
     {
-        return new Traza($idUsuario, $localizacion, $hecho, $posibleId, $fecha);
+        return new Usuario(
+            (int)$fila["id"],
+            $fila["identificador"],
+            $fila["contrasenna"],
+            $fila["codigoCookie"],
+            $fila["caducidadCodigoCookie"],
+            $fila["tipoUsuario"],
+            $fila["nombre"],
+            $fila["apellidos"]
+        );
     }
 
-    public static function registrarAccion(Traza $traza): bool
+    public static function usuarioObtenerPorContrasenna(string $identificador, string $contrasenna): ?Usuario
     {
-        $filasAfectadas = Self::ejecutarUpdel(
-            "INSERT INTO traza VALUES (?,?,?,?,?)",
-            [$traza->getIdUsuario() , $traza->getLocalizacion() , $traza->getHecho() , $traza->getPosibleId() , $traza->getFecha()]
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM usuario
+            WHERE identificador=? AND BINARY contrasenna=?",
+            [$identificador, $contrasenna]
         );
 
-        return ($filasAfectadas == 1);
+        if ($rs)    return Self::usuarioCrearDesdeFila($rs[0]);
+        else        return null;
     }
 
+    public static function usuarioObtenerPorCookie($id, $codigoCookie): ?Usuario
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM usuario
+                WHERE id = ? AND BINARY codigoCookie = ? AND caducidadCodigoCookie >= ?",
+            [$id, $codigoCookie, date("Y-m-d H:i:s", time())]
+        );
 
+        if ($rs)    return Self::usuarioCrearDesdeFila($rs[0]);
+        else        return null;
+    }
+
+    public static function generarRenovarSesionCookie($codigoCookie, $fechaCaducidadParaBD, $id)
+    {
+        // Anotar en la BD el codigoCookie y su caducidad.
+        Self::ejecutarConsulta(
+            "UPDATE usuario SET codigoCookie=?, caducidadCodigoCookie=? WHERE id=?",
+            [$codigoCookie, $fechaCaducidadParaBD, $id]
+        );
+    }
+
+    public static function cerrarSesion($id)
+    {
+        // Eliminar de la BD el codigoCookie y su caducidad.
+        Self::ejecutarConsulta(
+            "UPDATE usuario SET codigoCookie=NULL, caducidadCodigoCookie=NULL WHERE id=?",
+            [$id]
+        );
+    }
 }
