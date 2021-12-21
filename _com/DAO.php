@@ -1,6 +1,7 @@
 <?php
 
-require_once "__RequireOnceComunes.php";
+require_once "Clases.php";
+require_once "Varios.php";
 
 class DAO
 {
@@ -214,4 +215,5 @@ class DAO
             [$id]
         );
     }
+
 }

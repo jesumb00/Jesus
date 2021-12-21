@@ -1,6 +1,6 @@
 <?php
 
-require_once "../_com/__RequireOnceComunes.php";
+require_once "_com/DAO.php";
 
 //salirSiSesionFalla();
 

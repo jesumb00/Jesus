@@ -20,3 +20,22 @@
     width: 100%;
     border: none;
 }
+/*CAJERO TICKET*/
+#mainCaj{
+    margin-left: 5em;
+}
+#ticket{
+    margin-top: 5em;
+    margin-left: 3em;
+}
+#añadir-ticket{
+    width: 23%;
+}
+#posibleTicket{
+    margin-top: 2em;
+    height: 700px;
+    width: 400px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 20px;
+}

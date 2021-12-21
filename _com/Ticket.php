@@ -7,23 +7,21 @@ class Ticket extends Dato
     use Identificable;
 
 
-
     private DateTime $apertura;
-    private DateTime $cierre;
+    private int $caja;
     private int $empleadoId;
 
+    private ?DateTime $cierre;
+    private ?int $total = null;
+    private ?array $linea = null;
 
-    public function __construct(int $id,DateTime $apertura,DateTime $cierre,int $empleadoId)
+
+    public function __construct(int $id, DateTime $apertura, int $caja, int $empleadoId)
     {
         $this->id = $id;
         $this->setApertura($apertura);
-        $this->setApertura($cierre);
-        $this->setApertura($empleadoId);
-    }
-
-    public function setId(int $id)
-    {
-        $this->id = $id;
+        $this->setCaja($caja);
+        $this->setEmpleadoId($empleadoId);
     }
 
     public function getApertura(): DateTime
@@ -36,14 +34,14 @@ class Ticket extends Dato
         $this->apertura = $apertura;
     }
 
-    public function getCierre(): DateTime
+    public function getCaja(): int
     {
-        return $this->cierre;
+        return $this->caja;
     }
 
-    public function setCierre(DateTime $cierre)
+    public function setCaja(int $caja)
     {
-        $this->cierre = $cierre;
+        $this->caja = $caja;
     }
 
     public function getEmpleadoId(): int
@@ -56,14 +54,13 @@ class Ticket extends Dato
         $this->empleadoId = $empleadoId;
     }
 
-
-
     public function jsonSerialize()
     {
         return [
             "id" => $this->id,
             "apertura" => $this->apertura,
             "cierre" => $this->cierre,
+            "caja" => $this->caja,
             "empleadoId" => $this->empleadoId,
         ];
 
@@ -72,4 +69,5 @@ class Ticket extends Dato
         //$array["id"] = $this->id;
         //return $array;
     }
+
 }
