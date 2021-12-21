@@ -6,10 +6,10 @@ class Producto extends Dato
 {
     use Identificable;
 
-    private string $denominacion;
-    private string $tipo;
-    private string $precio;
-    private string $stock;
+    protected string $denominacion;
+    protected string $tipo;
+    protected string $precio;
+    protected string $stock;
 
     public function __construct($id, $denominacion, $tipo, $precio, $stock)
     {

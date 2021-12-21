@@ -157,46 +157,6 @@ class DAO
         else return $producto;
     }
 
-    /* USUARIO */
-
-    private static function usuarioCrearDesdeFila(array $fila): Usuario
-    {
-        return new Usuario(
-            (int)$fila["id"],
-            $fila["identificador"],
-            $fila["contrasenna"],
-            $fila["codigoCookie"],
-            $fila["caducidadCodigoCookie"],
-            $fila["tipoUsuario"],
-            $fila["nombre"],
-            $fila["apellidos"]
-        );
-    }
-
-    public static function usuarioObtenerPorContrasenna(string $identificador, string $contrasenna): ?Usuario
-    {
-        $rs = Self::ejecutarConsulta(
-            "SELECT * FROM usuario
-            WHERE identificador=? AND BINARY contrasenna=?",
-            [$identificador, $contrasenna]
-        );
-
-        if ($rs)    return Self::usuarioCrearDesdeFila($rs[0]);
-        else        return null;
-    }
-
-    public static function usuarioObtenerPorCookie($id, $codigoCookie): ?Usuario
-    {
-        $rs = Self::ejecutarConsulta(
-            "SELECT * FROM usuario
-                WHERE id = ? AND BINARY codigoCookie = ? AND caducidadCodigoCookie >= ?",
-            [$id, $codigoCookie, date("Y-m-d H:i:s", time())]
-        );
-
-        if ($rs)    return Self::usuarioCrearDesdeFila($rs[0]);
-        else        return null;
-    }
-
 
 
     /* USUARIO */
@@ -266,5 +226,22 @@ class DAO
             "UPDATE usuario SET codigoCookie=NULL, caducidadCodigoCookie=NULL WHERE id=?",
             [$id]
         );
+    }
+
+    // TRAZA
+
+    private static function trazaCrear($idUsuario, $localizacion, $hecho, $posibleId, $fecha): Traza
+    {
+        return new Traza($idUsuario, $localizacion, $hecho, $posibleId, $fecha);
+    }
+
+    public static function registrarAccion(Traza $traza): bool
+    {
+        $filasAfectadas = Self::ejecutarUpdel(
+            "INSERT INTO traza VALUES (?,?,?,?,?)",
+            [$traza->getIdUsuario() , $traza->getLocalizacion() , $traza->getHecho() , $traza->getPosibleId() , $traza->getFecha()]
+        );
+
+        return ($filasAfectadas == 1);
     }
 }
