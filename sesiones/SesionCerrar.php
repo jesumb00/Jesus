@@ -3,7 +3,7 @@
     require_once "../_com/__RequireOnceComunes.php";
     require_once "_Sesion.php";
 
-    salirSiSesionFalla();
+    devolverErrorSiSesionFalla();
 
     if(isset($_REQUEST["clickCerrar"]) && $_REQUEST["clickCerrar"]) {
         cerrarSesion();

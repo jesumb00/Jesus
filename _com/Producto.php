@@ -7,7 +7,7 @@ class Producto extends Dato
     use Identificable;
 
     protected string $denominacion;
-    protected string $tipo;
+    protected string $tipoId;
     protected string $precio;
     protected string $stock;
 

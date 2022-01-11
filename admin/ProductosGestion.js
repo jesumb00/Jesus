@@ -233,6 +233,14 @@ function clickEliminar(id) {
     llamadaAjax("ProductoEliminar.php", "id=" + id,
         function (texto) {
             var operacionOK = JSON.parse(texto);
+
+            debugger;
+            if (operacionOK == "NOSESION") {
+                alert("Nos vamos, porque no hay sesión.");
+                window.location.href = "../sesiones/SesionFormulario.php";
+                alert("No debería verse esto");
+            }
+
             if (operacionOK) {
                 domEliminar(id);
             } else {

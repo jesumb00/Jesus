@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+define("ERROR_SESION", "NOSESION");
+
 session_start();
 
+// TODO Adaptar/quitar esta función.
 function entrarSiSesionIniciada()
 {
     if (comprobarRenovarSesion()) redireccionar("../admin/ProductosGestion.php");
@@ -12,6 +15,14 @@ function entrarSiSesionIniciada()
 function salirSiSesionFalla()
 {
     if (!comprobarRenovarSesion()) redireccionar("../sesiones/SesionFormulario.php");
+}
+
+function devolverErrorSiSesionFalla()
+{
+    if (!comprobarRenovarSesion()) {
+        echo json_encode(ERROR_SESION);
+        exit;
+    }
 }
 
 function comprobarRenovarSesion(): bool
