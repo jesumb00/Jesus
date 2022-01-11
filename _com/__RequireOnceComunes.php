@@ -5,8 +5,8 @@
 require_once "DAO.php";
 require_once "Dato.php";
 require_once "Identificable.php";
-require_once "Linea.php";
 require_once "Producto.php";
+require_once "Linea.php";
 require_once "Ticket.php";
 require_once "Traza.php";
 require_once "Usuario.php";
