@@ -65,7 +65,7 @@ function inicializar() {
 
     llamadaAjax("ProductoObtenerTodos.php", "",
         function(texto) {
-             productosInicio = JSON.parse(texto);
+            productosInicio = JSON.parse(texto);
 
             for (var i=0; i<productosInicio.length; i++) {
                 domInsertar(productosInicio[i]);
@@ -91,7 +91,6 @@ function realizarFiltro(e) {
         llamadaAjax("ProductoObtenerTodos.php", "",
             function(texto) {
                 productosInicio = JSON.parse(texto);
-                debugger
                 for (var i=0; i<productosInicio.length; i++) {
                     domInsertar(productosInicio[i]);
                 }
@@ -166,10 +165,10 @@ function clickCrear() {
 
     llamadaAjax("ProductoCrear.php", objetoAParametrosParaRequest(producto),
         function(texto) {
-        debugger
+            debugger
             // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
             var producto = JSON.parse(texto);
-             //productosInicio = JSON.parse(texto);
+            //productosInicio = JSON.parse(texto);
             // Se fuerza la ordenación, ya que este elemento podría no quedar ordenado si se pone al final.
             domInsertar(producto, true);
 
@@ -259,14 +258,26 @@ function clickEliminar(id) {
 
 function domCrearDivInputText(textoValue, codigoOnblur) {
     let div = document.createElement("div");
-        let input = document.createElement("input");
-                input.setAttribute("type", "text");
-                input.setAttribute("value", textoValue);
-                input.setAttribute("onblur", codigoOnblur + " return false;");
+    let input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("value", textoValue);
+    input.setAttribute("onblur", codigoOnblur + " return false;");
     div.appendChild(input);
 
     return div;
 }
+
+function domCrearDivInputTextDisabled(textoValue, codigoOnblur) {
+    let div = document.createElement("div");
+    let input = document.createElement("input");
+    input.setAttribute("type", "text");
+    input.setAttribute("value", textoValue);
+    input.setAttribute("disabled", "true");
+    div.appendChild(input);
+
+    return div;
+}
+
 function domCrearDivSelect(options, codigoOnblur) {
     let div = document.createElement("div");
     let select = document.createElement("select");
@@ -282,9 +293,9 @@ function domCrearDivSelect(options, codigoOnblur) {
 
 function domCrearDivIcon(clase, codigoOnclick) {
     let div = document.createElement("div");
-        let i = document.createElement("i");
-                i.setAttribute("class", clase);
-                i.setAttribute("onclick", codigoOnclick + " return false;");
+    let i = document.createElement("i");
+    i.setAttribute("class", clase);
+    i.setAttribute("onclick", codigoOnclick + " return false;");
     div.appendChild(i);
 
     return div;
@@ -292,9 +303,9 @@ function domCrearDivIcon(clase, codigoOnclick) {
 
 function domObjetoADiv(producto) {
     let div = document.createElement("div");
-            div.setAttribute("id", "producto-" + producto.id);
+    div.setAttribute("id", "producto-" + producto.id);
     div.appendChild(domCrearDivInputText(producto.denominacion, "blurModificar(this);"));
-    div.appendChild(domCrearDivInputText(producto.tipo, "blurModificar(this);"));
+    div.appendChild(domCrearDivInputTextDisabled(producto.tipo));
     div.appendChild(domCrearDivInputText(producto.precio, "blurModificar(this);"));
     div.appendChild(domCrearDivInputText(producto.stock, "blurModificar(this);"));
     div.appendChild(domCrearDivIcon("fa fa-trash", "clickEliminar(" + producto.id + ");"));
@@ -372,4 +383,20 @@ function domModificar(producto) {
 
     // Se fuerza la ordenación, ya que este elemento podría no quedar ordenado si se pone al final.
     domInsertar(producto, true);
+}
+
+// Ventana para crear producto
+function evento(){
+    document.getElementById("btnCrearProducto").addEventListener("click", mostrarVentanaCrearProducto);
+    document.getElementById("iconoX").addEventListener("click", cerrarVentanaCrearProducto);
+}
+
+document.addEventListener("readystatechange", evento);
+
+function mostrarVentanaCrearProducto(){
+    document.getElementById("crearProducto").style.display = "block";
+}
+
+function cerrarVentanaCrearProducto(){
+    document.getElementById("crearProducto").style.display = "none";
 }

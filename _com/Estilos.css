@@ -12,7 +12,7 @@
     display: table-cell;
     text-align: center;
     border: 1px solid silver;
-    width: 25%;
+    width: 20%;
     padding: 1px;
 }
 
@@ -20,7 +20,28 @@
     width: 100%;
     border: none;
 }
+
+#crearProducto{
+    border: 1px solid silver;
+    width: 20%;
+    padding: 5px;
+    display: none;
+}
+
+#iconoX {
+    position: relative;
+    width: 16px;
+    float: right;
+}
+
+.fas {
+    position:absolute;
+    padding: 11px;
+    right: 1px;
+}
+
 /*CAJERO TICKET*/
+
 #mainCaj{
     margin-left: 5em;
 }

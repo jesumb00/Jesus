@@ -1,12 +1,12 @@
 <?php
-    require_once "../_com/__RequireOnceComunes.php";
-    require_once "../sesiones/_Sesion.php";
+require_once "../_com/__RequireOnceComunes.php";
+require_once "../sesiones/_Sesion.php";
 
-    salirSiSesionFalla();
-    $traza = new Traza(1, "ProductoGestion", "Se ha entrado a ProductosGestion ", 0, date("F j, Y, g:i a"));
-    // OJO ----> en el 4 campo del constructor debe ponerse el id del creado ( $categoria->getId() ) , demomento no pongo asi porq es una beta
+salirSiSesionFalla();
+$traza = new Traza(1, "ProductoGestion", "Se ha entrado a ProductosGestion ", 0, date("F j, Y, g:i a"));
+// OJO ----> en el 4 campo del constructor debe ponerse el id del creado ( $categoria->getId() ) , demomento no pongo asi porq es una beta
 
-    DAO::registrarAccion($traza);
+DAO::registrarAccion($traza);
 ?>
 
 
@@ -24,32 +24,38 @@
 
 <body>
 
-    <h1>Gestión de Productos</h1>
-    <br><br>
-    <section id='secFiltroTipo'>
-        <p>Filtrar por tipo</p>
-        <select id='selectTipos'>
-            <option value="Todos">Todos</option>
-        </select>
+<h1>Gestión de Productos</h1>
+<br><br>
+<section id='secFiltroTipo'>
+    <p>Filtrar por tipo</p>
+    <select id='selectTipos'>
+        <option value="Todos">Todos</option>
+    </select>
 
-    </section>
-    <br><br>
-    <section id="secTabla">
-        <div id='divCabecera'>
-            <div>
-                <div>Denominacion</div>
-                <div>Tipo</div>
-                <div>Precio Unidad</div>
-                <div>Stock</div>
-                <div>Eliminar</div>
-            </div>
+    <button id='btnCrearProducto'>Crear Producto</button>
+
+</section>
+<br><br>
+<section id="secTabla">
+    <div id='divCabecera'>
+        <div>
+            <div>Denominacion</div>
+            <div>Tipo</div>
+            <div>Precio Unidad</div>
+            <div>Stock</div>
+            <div>Eliminar</div>
         </div>
-        <div id='divDatos'>
-        </div>
-    </section>
+    </div>
+    <div id='divDatos'>
+    </div>
+</section>
 
-    <br>
+<br>
 
+<section id="crearProducto">
+    <div id="iconoX">
+        <i class="fa fa-times-circle"></i>
+    </div>
     <label>Nombre producto</label>
     <input type='text' id='inpNombre' placeholder='Producto' value='' /> <br><br>
     <label>Precio Unidad</label>
@@ -61,7 +67,9 @@
         <!--HAY QUE CARGAR LOS DATOS DESDE JS REUTILIZAR EL CODIGO DEL FILTRADO-->
     </select>
     <button id='btnCrear'>Crear</button>
-    <button id="btnCerrarSesion"> Cerrar sesión </button>
+</section> <br>
+
+<button id="btnCerrarSesion"> Cerrar sesión </button>
 
 </body>
 
