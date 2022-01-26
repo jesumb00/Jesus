@@ -11,7 +11,7 @@
             <h1 id="h1-caj" >TIENDA</h1>
             <article id="añadir-ticket">
                <select id="productos">
-               </select>
+
 
                 <!--ESTE CAMPO ESTA PENSADO PARA AÑADIR "N" NUMERO DE ITEMS AL TICKET-->
 
@@ -19,6 +19,7 @@
 
                 <input type="number" id="cantidad"  min="1" max="20" placeholder="Cantidad">
                 <input type="button" id="boton" value="Añadir">
+               </select>
             </article>
         </section>
             <article id="posibleTicket">
@@ -31,7 +32,11 @@
                     <h4>Total-----------------------------<input type="number" id="numero"  style="border: none" value="0"></input></h4>
                 </div>
             </article>
+        </select>
     </main>
+    <footer>
+        <input type="button" id="continuar" value="Continuar">
+    </footer>
     <script src="CajeroTicket.js"></script>
 </body>
 </html>

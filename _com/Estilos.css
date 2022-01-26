@@ -60,3 +60,8 @@
     border-color: black;
     border-radius: 20px;
 }
+#precio{
+    padding: 2%;
+    display:flex;
+    align-items: flex-end;
+}

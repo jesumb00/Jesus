@@ -7,6 +7,9 @@
 window.onload = inicializar;
 var productosInicio; //----
 var todosLosDatosCargados = false;
+var productosTicket=new Array();
+var productosPrecio=new Array();
+var productosCantidad=new Array();
 
 function notificarUsuario(texto) {
     // TODO En lugar del alert, habría que añadir una línea en una zona de notificaciones, arriba, con un temporizador para que se borre solo en ¿5? segundos.
@@ -176,10 +179,10 @@ function obtenerProductoporid(id,cantidad,span){
                 alert("No puedes comprar menos de 1 producto");
                 cantidad.value=1;
             }else if(cantidad.value > parseInt(productosInicio.stock)){
-                alert("No puedes comprar mas del stock existente que es "+cantidad.value);
+                alert("No puedes comprar mas del stock existente que es "+productosInicio.stock);
                 cantidad.value=1;
             }else {
-                imprimir(productosInicio.id, productosInicio.denominacion, parseInt(productosInicio.precio), cantidad.value,parseInt(span));
+                imprimir(productosInicio, cantidad.value,parseInt(span));
             }
         },
         function(texto) {
@@ -201,14 +204,41 @@ anadir.addEventListener('click',CargarTicket);
         obtenerProductoporid(producto,cantidad,span.value);
 };
 
-   function imprimir(id,denominacion,precio,cantidad,span){
+   function imprimir(productosInicio,cantidad,span){
        let impreso = document.getElementById('impreso');
        let total = document.getElementById('precio');
-       let precio1=precio*cantidad;
+       let precio1=productosInicio.precio*cantidad;
        let precioTotal=span+precio1;
+       debugger;
+       if(productosTicket.length===0) {
+           productosTicket.push(productosInicio);
+           productosCantidad.push(cantidad);
+       }
 
-        impreso.innerHTML+=("<p>"+denominacion+"-----------------"+cantidad+"----------------"+precio+"€</p>")
-        total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  style='border: none' value="+precioTotal+"></input></h4>");
+       //productosPrecio.push(precio1);
+       console.log(productosTicket);
+       //console.log(productosPrecio);
+
+       for(let i = 0; i < productosTicket.length; i++){
+           debugger;
+           if(document.getElementById(productosTicket[i].id)&productosTicket[i].id==productosInicio.id){
+               debugger;
+               // console.log(productosTicket[i].id)
+               //console.log(productosInicio.id);
+                    let cantidadTotal=cantidad+productosCantidad[i]
+                    impreso.innerHTML=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidadTotal+"----------------"+productosInicio.precio+"€</p>");
+
+           }else{
+               if(!productosTicket.length===0) {
+                   productosTicket.push(productosInicio);
+                   productosCantidad.push(cantidad);
+               }
+               impreso.innerHTML+=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidad+"----------------"+productosInicio.precio+"€</p>");
+               total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+precioTotal+"></input></h4>");
+               i=+productosTicket.length;
+           }
+       }
+
    }
 
 
