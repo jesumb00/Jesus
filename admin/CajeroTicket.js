@@ -199,6 +199,8 @@ anadir.addEventListener('click',CargarTicket);
    function CargarTicket(){
 
     let cantidad=document.getElementById('cantidad');
+    let confirmar=document.getElementById('continuar');
+        confirmar.disabled=false;
        let span=document.getElementById('numero');
         let producto = document.getElementById('productos').value;
         obtenerProductoporid(producto,cantidad,span.value);
@@ -225,7 +227,7 @@ anadir.addEventListener('click',CargarTicket);
                debugger;
                // console.log(productosTicket[i].id)
                //console.log(productosInicio.id);
-                    let cantidadTotal=cantidad+productosCantidad[i]
+                    let cantidadTotal=cantidad+productosCantidad[i];
                     impreso.innerHTML=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidadTotal+"----------------"+productosInicio.precio+"€</p>");
 
            }else{
@@ -239,12 +241,18 @@ anadir.addEventListener('click',CargarTicket);
            }
        }
 
+       var confirmar=document.getElementById('continuar');
+       confirmar.addEventListener('click',confirmarCompra);
+
+       function confirmarCompra(){
+               var mensaje;
+               var opcion = confirm("¿Esta seguro de hacer la compra?");
+               if (opcion == true) {
+                   alert("Se ha confirmado su compra") ;
+                   location.reload();
+               } else {
+                   alert("Has cancelado tu compra") ;
+                    location.reload();
+               }
+       }
    }
-
-
-
-
-
-
-
-
