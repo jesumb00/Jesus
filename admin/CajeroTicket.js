@@ -10,6 +10,8 @@ var todosLosDatosCargados = false;
 var productosTicket=new Array();
 var productosPrecio=new Array();
 var productosCantidad=new Array();
+var cantidadInicial;
+
 
 function notificarUsuario(texto) {
     // TODO En lugar del alert, habría que añadir una línea en una zona de notificaciones, arriba, con un temporizador para que se borre solo en ¿5? segundos.
@@ -212,10 +214,12 @@ anadir.addEventListener('click',CargarTicket);
        let precio1=productosInicio.precio*cantidad;
        let precioTotal=span+precio1;
        debugger;
+        console.log("ca"+cantidad);
        if(productosTicket.length===0) {
-           var cantidadQuitada=parseInt(productosInicio.stock);
+           cantidadInicial=parseInt(productosInicio.stock);
            productosInicio.stock-=cantidad;
            productosTicket.push(productosInicio);
+           productosCantidad.push(cantidad);
 
        }
 
@@ -227,9 +231,16 @@ anadir.addEventListener('click',CargarTicket);
            debugger;
            if(document.getElementById(productosTicket[i].id)&&productosTicket[i].id==productosInicio.id){
                debugger;
-                    let cantidadProductoSeleccionado=parseInt(productosTicket[i].stock)-cantidadQuitada;
-                    console.log(cantidadProductoSeleccionado);
-                    impreso.innerHTML=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidadProductoSeleccionado+"----------------"+productosTicket[i].precio+"€</p>");
+
+                    let j=productosTicket[i].stock;
+                    let x=cantidadInicial-j;
+                    let p=parseInt(productosCantidad[i])+x;
+                    console.log(p);
+                    productosCantidad[i]=p;
+
+
+
+                    impreso.innerHTML=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+productosCantidad[i]+"----------------"+productosTicket[i].precio+"€</p>");
 
            }else{
                if(!productosTicket.length===0) {
