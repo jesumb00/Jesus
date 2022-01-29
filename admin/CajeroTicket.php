@@ -1,3 +1,13 @@
+<?php
+require_once "../_com/__RequireOnceComunes.php";
+require_once "../sesiones/_Sesion.php";
+
+salirSiSesionFalla();
+$traza = new Traza(1, "CajeroTicket.php", "Se ha entrado a cajeroTicket ", 0, date("F j, Y, g:i a"));
+// OJO ----> en el 4 campo del constructor debe ponerse el id del creado ( $categoria->getId() ) , demomento no pongo asi porq es una beta
+
+DAO::registrarAccion($traza);
+?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
