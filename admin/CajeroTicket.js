@@ -213,8 +213,10 @@ anadir.addEventListener('click',CargarTicket);
        let precioTotal=span+precio1;
        debugger;
        if(productosTicket.length===0) {
+           var cantidadQuitada=parseInt(productosInicio.stock);
+           productosInicio.stock-=cantidad;
            productosTicket.push(productosInicio);
-           productosCantidad.push(cantidad);
+
        }
 
        //productosPrecio.push(precio1);
@@ -223,12 +225,11 @@ anadir.addEventListener('click',CargarTicket);
 
        for(let i = 0; i < productosTicket.length; i++){
            debugger;
-           if(document.getElementById(productosTicket[i].id)&productosTicket[i].id==productosInicio.id){
+           if(document.getElementById(productosTicket[i].id)&&productosTicket[i].id==productosInicio.id){
                debugger;
-               // console.log(productosTicket[i].id)
-               //console.log(productosInicio.id);
-                    let cantidadTotal=cantidad+productosCantidad[i];
-                    impreso.innerHTML=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidadTotal+"----------------"+productosInicio.precio+"€</p>");
+                    let cantidadProductoSeleccionado=parseInt(productosTicket[i].stock)-cantidadQuitada;
+                    console.log(cantidadProductoSeleccionado);
+                    impreso.innerHTML=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidadProductoSeleccionado+"----------------"+productosTicket[i].precio+"€</p>");
 
            }else{
                if(!productosTicket.length===0) {
@@ -249,6 +250,20 @@ anadir.addEventListener('click',CargarTicket);
                var opcion = confirm("¿Esta seguro de hacer la compra?");
                if (opcion == true) {
                    alert("Se ha confirmado su compra") ;
+                       llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
+                           function (texto) {
+                               if (texto != "null") {
+                                   // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
+                                   producto = JSON.parse(texto);
+                                   domModificar(producto);
+                               } else {
+                                   notificarUsuario("Error Ajax al modificar: " + texto);
+                               }
+                           },
+                           function (texto) {
+                               notificarUsuario("Error Ajax al modificar: " + texto);
+                           }
+                       );
                    location.reload();
                } else {
                    alert("Has cancelado tu compra") ;
