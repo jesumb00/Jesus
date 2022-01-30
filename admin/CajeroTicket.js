@@ -232,22 +232,28 @@ anadir.addEventListener('click',CargarTicket);
            if(document.getElementById(productosTicket[i].id)&&productosTicket[i].id==productosInicio.id){
                debugger;
 
+
+
+                    console.log("ppppppppp"+productosCantidad[i]);
                     let j=productosTicket[i].stock;
                     let x=cantidadInicial-j;
+                    //productosTicket[i].stock-=cantidad;
                     let p=parseInt(productosCantidad[i])+x;
                     console.log(p);
                     productosCantidad[i]=p;
 
 
 
-                    impreso.innerHTML=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+productosCantidad[i]+"----------------"+productosTicket[i].precio+"€</p>");
+                    impreso.innerHTML=("<p>"+productosTicket[i].denominacion+"<input type='text' id='"+productosTicket[i].id+"' value='"+productosCantidad[i]+"'>"+productosTicket[i].precio+"€</input>");
 
+               total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+precioTotal+"></input></h4>");
            }else{
                if(!productosTicket.length===0) {
                    productosTicket.push(productosInicio);
                    productosCantidad.push(cantidad);
                }
-               impreso.innerHTML+=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidad+"----------------"+productosInicio.precio+"€</p>");
+               impreso.innerHTML=("<p>"+productosInicio.denominacion+"<input type='text' id='"+productosTicket[i].id+"' value='"+productosCantidad[i]+"'>"+productosTicket[i].precio+"€</input>");
+               //impreso.innerHTML+=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidad+"----------------"+productosInicio.precio+"€</p>");
                total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+precioTotal+"></input></h4>");
                i=+productosTicket.length;
            }
