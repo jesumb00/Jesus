@@ -25,15 +25,6 @@ DAO::registrarAccion($traza);
 <body>
 
 <h1>Gestión de Productos</h1>
-<nav>
-    <ul class="menu">
-        <li><a href="ProductosGestion.php">Gestión Producto</a></li>
-        <li><a href="usuarioGestion.php">Gestión Usuario</a></li>
-        <li><a href="#" id="btnCerrarSesion">Cerrar Sesion</a></li>
-
-    </ul>
-</nav>
-
 <br><br>
 <section id='secFiltroTipo'>
     <p>Filtrar por tipo</p>
@@ -78,7 +69,7 @@ DAO::registrarAccion($traza);
     <button id='btnCrear'>Crear</button>
 </section> <br>
 
-
+<button id="btnCerrarSesion"> Cerrar sesión </button>
 
 </body>
 
