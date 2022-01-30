@@ -149,7 +149,6 @@ function clickCerrarSesion() {
 }
 
 function clickCrear() {
-
     inpNombre.disabled = true;
     selTipos.disabled = true;
     inpPrecio.disabled = true;
@@ -162,7 +161,6 @@ function clickCrear() {
         "precio" : inpPrecio.value,
         "stock" : inpStock.value
     }
-
 
 
     llamadaAjax("ProductoCrear.php", objetoAParametrosParaRequest(producto),
@@ -213,8 +211,6 @@ function addProductoSelectFiltro(nombreSelectHTMl, productoActual) {
 function blurModificar(input) {
     let div = input.parentElement.parentElement;
     let producto = domDivAObjeto(div);
-    console.log(producto);
-    console.log(div);
 
     llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
         function (texto) {
@@ -282,7 +278,18 @@ function domCrearDivInputTextDisabled(textoValue, codigoOnblur) {
     return div;
 }
 
+function domCrearDivSelect(options, codigoOnblur) {
+    let div = document.createElement("div");
+    let select = document.createElement("select");
+    for (let i = 0; i < options.length; i++) {
+        var opcion = new Option(options[i], options[i]);
+        select.appendChild(opcion);
+    }
+    option.setAttribute("onblur", codigoOnblur + " return false;");
+    div.appendChild(select);
 
+    return div;
+}
 
 function domCrearDivIcon(clase, codigoOnclick) {
     let div = document.createElement("div");
