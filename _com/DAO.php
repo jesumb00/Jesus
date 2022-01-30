@@ -164,7 +164,7 @@ class DAO
     private static function usuarioCrearDesdeFila(array $fila): Usuario
     {
         return new Usuario(
-            (int)$fila["id"],
+            $fila["id"],
             $fila["identificador"],
             $fila["contrasenna"],
             $fila["codigoCookie"],
@@ -175,15 +175,76 @@ class DAO
         );
     }
 
-    public static function usuarioCrear(string $nombre, string $apellidos, string $identificador, string $contrasenna)
+    public static function usuarioObtenerTodos(): array
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM usuario  ORDER BY id",
+            []
+        );
+
+        $datos = [];
+        foreach ($rs as $fila) {
+            $usuario = Self::usuarioCrearDesdeFila($fila);
+            array_push($datos, $usuario);
+        }
+
+        return $datos;
+    }
+
+    public static function usuarioObtenerPorId(int $id): ?Usuario
+    {
+        $rs = Self::ejecutarConsulta(
+            "SELECT * FROM usuario WHERE id=?",
+            [$id]
+        );
+
+        if($rs) return Self::usuarioCrearDesdeFila($rs[0]);
+        else return null;
+    }
+
+
+        public static function usuarioCrear(string $nombre, string $apellidos, string $identificador, string $contrasenna)
     {
         $idAutogenerado = Self::ejecutarInsert(
             "INSERT INTO usuario  VALUES (NULL ,?, ?, NULL, NULL, ?, ?, ?)",
-            [$identificador, $contrasenna, "CLWEB", $nombre, $apellidos]
+            [$identificador, $contrasenna, "ENCAR", $nombre, $apellidos]
         );
 
         if ($idAutogenerado == null) return null;
         else return 1;
+    }
+
+
+    public static function usuarioActualizar(Usuario $usuario): ?Usuario
+    {
+        $filasAfectadas = Self::ejecutarUpdel(
+            "UPDATE usuario SET identificador=?, contrasenna=?, codigoCookie=?, caducidadCodigoCookie=?, tipoUsuario=?, nombre=?, apellidos=? WHERE id=?",
+            [$usuario->getIdentificador(), $usuario->getContrasenna(), $usuario->getCodigoCookie(), $usuario->getCaducidadCodigoCookie(), $usuario->getTipoUsuario(), $usuario->getNombre(), $usuario->getApellidos(), $usuario->getId()]
+        );
+
+        if($filasAfectadas === null) return null;
+        else return $usuario;
+    }
+
+    public static function usuarioActualizarP(string $nombre, string $apellidos, string $identificador, int $id, string $tipo): ?array
+    {
+        $filasAfectadas = Self::ejecutarUpdel(
+            "UPDATE usuario SET identificador=?, tipoUsuario=?, nombre=?, apellidos=? WHERE id=?",
+            [$identificador, $tipo, $nombre, $apellidos, $id]
+        );
+
+        if($filasAfectadas === null) return null;
+        else return $filasAfectadas;
+    }
+
+    public static function usuarioEliminarPorId(int $id): bool
+    {
+        $filasAfectadas = Self::ejecutarUpdel(
+            "DELETE FROM usuario WHERE id=?",
+            [$id]
+        );
+
+        return ($filasAfectadas == 1);
     }
 
     public static function usuarioObtenerPorContrasenna(string $identificador, string $contrasenna): ?Usuario

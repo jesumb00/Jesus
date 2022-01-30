@@ -28,6 +28,7 @@ class Usuario extends Dato
         $this->apellidos = $apellidos;
     }
 
+    //Nos sirve para meter los datos del objeto PHP en un objeto JSOn que puede leer JS
     public function jsonSerialize()
     {
         return [
