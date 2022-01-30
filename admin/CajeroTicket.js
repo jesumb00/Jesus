@@ -220,12 +220,13 @@ anadir.addEventListener('click',CargarTicket);
            productosInicio.stock-=cantidad;
            productosTicket.push(productosInicio);
            productosCantidad.push(cantidad);
+       }else{
+
        }
 
        //productosPrecio.push(precio1);
        console.log(productosTicket);
        //console.log(productosPrecio);
-
        for(let i = 0; i < productosTicket.length; i++){
            debugger;
            if(document.getElementById(productosTicket[i].id)&&productosTicket[i].id==productosInicio.id){
@@ -247,8 +248,8 @@ anadir.addEventListener('click',CargarTicket);
                     productosCantidad[i]=x;
 
 
-
-                    impreso.innerHTML=("<p>"+productosTicket[i].denominacion+"<input type='text' id='"+productosTicket[i].id+"' value='"+productosCantidad[i]+"'>"+productosTicket[i].precio+"€</input>");
+                    document.getElementById(productosTicket[i].id).value=productosCantidad[i];
+                    //impreso.innerHTML+=("<p>"+productosTicket[i].denominacion+"<input type='number' id='"+productosTicket[i].id+"' value='"+productosCantidad[i]+"'>"+productosTicket[i].precio+"€</input>");
 
                total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+precioTotal+"></input></h4>");
            }else{
@@ -256,7 +257,7 @@ anadir.addEventListener('click',CargarTicket);
                    productosTicket.push(productosInicio);
                    productosCantidad.push(cantidad);
                }
-               impreso.innerHTML=("<p>"+productosInicio.denominacion+"<input type='text' id='"+productosTicket[i].id+"' value='"+productosCantidad[i]+"'>"+productosTicket[i].precio+"€</input>");
+               impreso.innerHTML+=("<p>"+productosInicio.denominacion+"<input type='number' id='"+productosTicket[i].id+"' value='"+cantidad+"'>"+productosTicket[i].precio+"€</input>");
                //impreso.innerHTML+=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidad+"----------------"+productosInicio.precio+"€</p>");
                total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+precioTotal+"></input></h4>");
                i=+productosTicket.length;
@@ -267,7 +268,6 @@ anadir.addEventListener('click',CargarTicket);
        confirmar.addEventListener('click',confirmarCompra);
 
        function confirmarCompra(){
-               var mensaje;
                var opcion = confirm("¿Esta seguro de hacer la compra?");
                if (opcion == true) {
                    alert("Se ha confirmado su compra") ;
