@@ -220,7 +220,6 @@ anadir.addEventListener('click',CargarTicket);
            productosInicio.stock-=cantidad;
            productosTicket.push(productosInicio);
            productosCantidad.push(cantidad);
-
        }
 
        //productosPrecio.push(precio1);
@@ -233,14 +232,19 @@ anadir.addEventListener('click',CargarTicket);
                debugger;
 
 
-
+                    productosTicket[i].stock-=cantidad;
                     console.log("ppppppppp"+productosCantidad[i]);
                     let j=productosTicket[i].stock;
-                    let x=cantidadInicial-j;
+                    if(parseInt(productosInicio.stock)>j){
+                        var x=parseInt(productosInicio.stock)-j;
+                    }else{
+                        var x=j-parseInt(productosInicio.stock);
+                    }
+
                     //productosTicket[i].stock-=cantidad;
-                    let p=parseInt(productosCantidad[i])+x;
-                    console.log(p);
-                    productosCantidad[i]=p;
+                    //let p=parseInt(productosCantidad[i])+x;
+                    //console.log(p);
+                    productosCantidad[i]=x;
 
 
 
