@@ -34,12 +34,12 @@ DAO::registrarAccion($traza);
         </section>
             <article id="posibleTicket">
                 <h2>Factura de la tienda</h2>
-                <p> Nombre-----------------Cantidad----------------Precio unitario</p>
+                <p> Nombre-------------------Cantidad-----------------Precio unitario</p>
                 <div id='impreso'>
 
                 </div>
                 <div id='precio'>
-                    <h4>Total-----------------------------<input type="number" id="numero"  style="border: none" value="0"></input></h4>
+                    <h4>Total-------------------------------<input type="number" id="numero"  style="border: none" value="0"></input></h4>
                 </div>
             </article>
         </select>

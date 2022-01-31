@@ -245,26 +245,28 @@ anadir.addEventListener('click',CargarTicket);
                     //console.log(p);
                     productosCantidad[i]=x;
 
-
-                    document.getElementById(productosTicket[i].id).value=productosCantidad[i];
-                    //impreso.innerHTML+=("<p>"+productosTicket[i].denominacion+"<input type='number' id='"+productosTicket[i].id+"' value='"+productosCantidad[i]+"'>"+productosTicket[i].precio+"€</input>");
-
-               total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+precioTotal+"></input></h4>");
-               i=+productosTicket.length;
+                    if(!document.getElementById(productosTicket[i].id)===x) {
+                        debugger;
+                        document.getElementById(productosTicket[i].id).value = productosCantidad[i];
+                        //impreso.innerHTML+=("<p>"+productosTicket[i].denominacion+"<input type='number' id='"+productosTicket[i].id+"' value='"+productosCantidad[i]+"'>"+productosTicket[i].precio+"€</input>");
+                            total.innerHTML = ("<h4>Total-----------------------<input type='number' id='numero' disabled style='border: none' value=" + precioTotal + "></input></h4>");
+                        i = +productosTicket.length;
+                    }
            }else{
 
                        if(!document.getElementById(productosInicio.id)){
                            productosTicket.push(productosInicio);
                            productosCantidad.push(cantidad);
-                           impreso.innerHTML+=("<p>"+productosInicio.denominacion+"<input type='number' id='"+productosInicio.id+"' value='"+cantidad+"'>"+productosInicio.precio+"€</input>");
+                           impreso.innerHTML+=("<p>"+productosInicio.denominacion+"---------<input type='number' id='"+productosInicio.id+"' disabled value='"+cantidad+"'>-----------"+productosInicio.precio+"€</input>");
                            i=+productosTicket.length;
+                           total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+precioTotal+"></input></h4>");
                        }
 
 
 
 
                //impreso.innerHTML+=("<p id='"+productosTicket[i].id+"'>"+productosInicio.denominacion+"-----------------"+cantidad+"----------------"+productosInicio.precio+"€</p>");
-               total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+precioTotal+"></input></h4>");
+
 
            }
        }
