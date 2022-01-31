@@ -256,7 +256,7 @@ anadir.addEventListener('click',CargarTicket);
                        if(!document.getElementById(productosInicio.id)){
                            productosTicket.push(productosInicio);
                            productosCantidad.push(cantidad);
-                           impreso.innerHTML+=("<p>"+productosInicio.denominacion+"<input type='number' id='"+productosInicio.id+"' value='"+cantidad+"'>"+productosTicket[i].precio+"€</input>");
+                           impreso.innerHTML+=("<p>"+productosInicio.denominacion+"<input type='number' id='"+productosInicio.id+"' value='"+cantidad+"'>"+productosInicio.precio+"€</input>");
                            i=+productosTicket.length;
                        }
 
@@ -276,7 +276,7 @@ anadir.addEventListener('click',CargarTicket);
                var opcion = confirm("¿Esta seguro de hacer la compra?");
                if (opcion == true) {
                    alert("Se ha confirmado su compra") ;
-                       llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
+                       /**llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
                            function (texto) {
                                if (texto != "null") {
                                    // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
@@ -289,7 +289,7 @@ anadir.addEventListener('click',CargarTicket);
                            function (texto) {
                                notificarUsuario("Error Ajax al modificar: " + texto);
                            }
-                       );
+                       );**/
                    location.reload();
                } else {
                    alert("Has cancelado tu compra") ;
