@@ -10,7 +10,7 @@ var todosLosDatosCargados = false;
 var productosTicket=new Array();
 var productosPrecio=new Array();
 var productosCantidad=new Array();
-var cantidadInicial;
+var contador=0;
 
 
 function notificarUsuario(texto) {
@@ -213,10 +213,12 @@ anadir.addEventListener('click',CargarTicket);
        let total = document.getElementById('precio');
        let precio1=productosInicio.precio*cantidad;
        let precioTotal=span+precio1;
+       contador++;
+       console.log(contador);
        debugger;
         console.log("ca"+cantidad);
        if(productosTicket.length===0) {
-           cantidadInicial=parseInt(productosInicio.stock);
+          // cantidadInicial=parseInt(productosInicio.stock);
            productosInicio.stock-=cantidad;
            productosTicket.push(productosInicio);
            productosCantidad.push(cantidad);
@@ -232,7 +234,7 @@ anadir.addEventListener('click',CargarTicket);
 
 
                     productosTicket[i].stock-=cantidad;
-                    console.log("ppppppppp"+productosCantidad[i]);
+                    //console.log("ppppppppp"+productosCantidad[i]);
                     let j=productosTicket[i].stock;
                     if(parseInt(productosInicio.stock)>j){
                         var x=parseInt(productosInicio.stock)-j;
@@ -245,20 +247,30 @@ anadir.addEventListener('click',CargarTicket);
                     //console.log(p);
                     productosCantidad[i]=x;
 
-                    if(!document.getElementById(productosTicket[i].id)===x) {
+
                         debugger;
                         document.getElementById(productosTicket[i].id).value = productosCantidad[i];
                         //impreso.innerHTML+=("<p>"+productosTicket[i].denominacion+"<input type='number' id='"+productosTicket[i].id+"' value='"+productosCantidad[i]+"'>"+productosTicket[i].precio+"€</input>");
                             total.innerHTML = ("<h4>Total-----------------------<input type='number' id='numero' disabled style='border: none' value=" + precioTotal + "></input></h4>");
                         i = +productosTicket.length;
-                    }
+
            }else{
 
                        if(!document.getElementById(productosInicio.id)){
-                           productosTicket.push(productosInicio);
-                           productosCantidad.push(cantidad);
+
+                           debugger;
+
+
+                            if(contador>1) {
+                                productosInicio.stock-=cantidad;
+                                productosTicket.push(productosInicio);
+                                productosCantidad.push(cantidad);
+                            }
                            impreso.innerHTML+=("<p>"+productosInicio.denominacion+"---------<input type='number' id='"+productosInicio.id+"' disabled value='"+cantidad+"'>-----------"+productosInicio.precio+"€</input>");
                            i=+productosTicket.length;
+
+
+
                            total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+precioTotal+"></input></h4>");
                        }
 
