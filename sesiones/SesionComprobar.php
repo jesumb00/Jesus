@@ -13,7 +13,7 @@
             generarRenovarSesionCookie();
         }
 
-        redireccionar("../admin/ProductosGestion.php");
+        redireccionar("../admin/CajeroTicket.php");
     } else {
         redireccionar("SesionFormulario.php?error");
     }

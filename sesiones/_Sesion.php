@@ -9,7 +9,8 @@ session_start();
 // TODO Adaptar/quitar esta función.
 function entrarSiSesionIniciada()
 {
-    if (comprobarRenovarSesion()) redireccionar("../admin/ProductosGestion.php");
+
+    if (comprobarRenovarSesion()) redireccionar("../admin/CajeroTicket.php");
 }
 
 function salirSiSesionFalla()
