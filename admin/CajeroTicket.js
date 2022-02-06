@@ -8,7 +8,6 @@ window.onload = inicializar;
 var productosInicio; //----
 var todosLosDatosCargados = false;
 var productosTicket=new Array();
-var productosPrecio=new Array();
 var productosCantidad=new Array();
 var contador=0;
 
@@ -202,10 +201,11 @@ function obtenerProductoporid(id,cantidad,span){
 anadir.addEventListener('click',CargarTicket);
 
    function CargarTicket(){
-
     let cantidad=document.getElementById('cantidad');
     let confirmar=document.getElementById('continuar');
         confirmar.disabled=false;
+    let limpiar=document.getElementById('limpiar');
+        limpiar.disabled=false;
        let span=document.getElementById('numero');
         let producto = document.getElementById('productos').value;
         obtenerProductoporid(producto,cantidad,span.value);
@@ -304,6 +304,23 @@ anadir.addEventListener('click',CargarTicket);
                    }
                    debugger;
                }
+
+       }
+       var limpiar=document.getElementById('limpiar');
+       limpiar.addEventListener('click',Limpiar);
+       function Limpiar(){
+           for (let i = productosTicket.length; i > 0; i--) {
+               productosTicket.pop();
+               console.log(productosTicket);
+           }
+           for (let i = productosCantidad.length; i > 0; i--) {
+               productosCantidad.pop();
+               console.log(productosCantidad);
+           }
+
+           contador=0;
+           impreso.innerHTML="";
+           total.innerHTML=("<h4>Total-----------------------<input type='number' id='numero'  disabled style='border: none' value="+0+"></input></h4>");
 
        }
    }

@@ -46,6 +46,7 @@ DAO::registrarAccion($traza);
     </main>
     <footer>
         <input type="button" id="continuar" disabled='true' value="Continuar">
+        <input type="button" id="limpiar" disabled='true' value="Limpiar">
     </footer>
     <script src="CajeroTicket.js"></script>
 </body>
