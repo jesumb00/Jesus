@@ -172,6 +172,9 @@ function domInsertar(productoNueva, enOrden=false) {
     }
 }
 
+
+
+
 function obtenerProductoporid(id,cantidad,span){
     llamadaAjax("ProductoObtenerPorId.php?id="+id, "",
         function(texto) {
@@ -287,27 +290,20 @@ anadir.addEventListener('click',CargarTicket);
        confirmar.addEventListener('click',confirmarCompra);
 
        function confirmarCompra(){
-               var opcion = confirm("¿Esta seguro de hacer la compra?");
+               let opcion = confirm("¿Esta seguro de hacer la compra?");
                if (opcion == true) {
                    alert("Se ha confirmado su compra") ;
-                       /**llamadaAjax("ProductoActualizar.php", objetoAParametrosParaRequest(producto),
-                           function (texto) {
-                               if (texto != "null") {
-                                   // Se re-crean los datos por si han modificado/normalizado algún valor en el servidor.
-                                   producto = JSON.parse(texto);
-                                   domModificar(producto);
-                               } else {
-                                   notificarUsuario("Error Ajax al modificar: " + texto);
-                               }
-                           },
-                           function (texto) {
-                               notificarUsuario("Error Ajax al modificar: " + texto);
-                           }
-                       );**/
                    location.reload();
                } else {
+                   debugger;
                    alert("Has cancelado tu compra") ;
-                    location.reload();
+                   let opcion2 = confirm("¿Deseas recargar la pagina?");
+                   if (opcion2 == true) {
+                       alert("Se va recargar su pagina") ;
+                       location.reload();
+                   }
+                   debugger;
                }
+
        }
    }
